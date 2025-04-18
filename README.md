@@ -38,10 +38,10 @@ Ainda não sou profissional da área, mas estou construindo uma base sólida com
 
 ## 🌐 Acesse o projeto online
 
-[🔗 Clique aqui para jogar🔗](https://asjcdev.github.io/quiz-setores-roleta/)  
-(Substitua o link conforme o nome real do repositório no GitHub)
+👉 [Clique aqui para jogar](https://asjcdev.github.io/quiz-setores-roleta/)  
 
 ---
+🚀 Projeto em aprendizado contínuo. Toda sugestão é bem-vinda!
 
 ## 📬 Contato
 
