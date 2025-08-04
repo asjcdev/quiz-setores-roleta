@@ -1,238 +1,628 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nível 3 - Setores Visuais</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: #1e1e1e;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding-top: 10px;
-      overflow: hidden;
-      height: 100vh;
-    }
-
-    h2 {
-      color: #00ffff;
-      margin-bottom: 5px;
-      font-size: 18px;
-    }
-
-    #contador {
-      margin-bottom: 10px;
-      color: #00ffff;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 80px);
-      gap: 3px;
-      justify-content: center;
-      margin-top: 5px;
-    }
-
-    .numero {
-      position: relative;
-      width: 80px;
-      height: auto;
-      padding: 4px 0;
-      font-size: 16px;
-      font-weight: bold;
-      border: 2px solid #444;
-      border-radius: 6px;
-      cursor: pointer;
-      color: white;
-      background-color: #2c2c2c;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .vermelho { background-color: #c00000 !important; }
-    .preto { background-color: #000000 !important; }
-    .verde { background-color: #007f00 !important; }
-
-    .numero.selecionado {
-      border: 2px solid gold;
-    }
-
-    .numero.errado::after {
-      content: 'X';
-      position: absolute;
-      font-size: 34px;
-      font-weight: bold;
-      color: white;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
-    .numero.correto::after {
-      content: '✔';
-      position: absolute;
-      font-size: 34px;
-      font-weight: bold;
-      color: #00ff88;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
-    .zero {
-      grid-column: 2 / span 1;
-    }
-
-    button {
-      margin-top: 8px;
-      padding: 10px 25px;
-      font-size: 16px;
-      background-color: #00ffff;
-      color: #000;
-      border: none;
-      border-radius: 5px;
-      cursor: not-allowed;
-      opacity: 0.4;
-      transition: all 0.3s ease-in-out;
-    }
-
-    button.ativado {
-      background-color: #00ff88;
-      color: #000;
-      cursor: pointer;
-      opacity: 1;
-      box-shadow: 0 0 10px #00ff88aa;
-    }
-
-    #resultado {
-      margin-top: 10px;
-      font-weight: bold;
-      min-height: 40px;
-    }
-  </style>
-</head>
-<body>
-  <h2 id="pergunta">Clique nos números Tier</h2>
-  <p id="contador">Selecionados: 0/0</p>
-  <div class="grid" id="numeros-grid"></div>
-  <button id="btnVerificar" onclick="verificar()" disabled>Verificar</button>
-  <p id="resultado"></p>
-
-  <script>
-    const vermelhos = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
-    const pretos = [2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35];
-    const setores = {
-      "Voisins": [22,18,29,7,28,12,35,3,26,0,32,15,19,4,21,2,25],
-      "Orphelins": [1,20,14,31,9,17,34,6],
-      "Tier": [27,13,36,11,30,8,23,10,5,24,16,33]
-    };
-
-    let setorAtual = "";
-
-    function escolherSetorAleatorio() {
-      const keys = Object.keys(setores);
-      return keys[Math.floor(Math.random() * keys.length)];
-    }
-
-    function novaPergunta() {
-      setorAtual = escolherSetorAleatorio();
-      document.getElementById("pergunta").textContent = `Clique nos números ${setorAtual}`;
-      document.getElementById("resultado").textContent = "";
-      document.getElementById("btnVerificar").disabled = true;
-      document.getElementById("btnVerificar").classList.remove("ativado");
-      gerarGrid();
-      document.getElementById("contador").textContent = `Selecionados: 0/${setores[setorAtual].length}`;
-    }
-
-    function gerarGrid() {
-      const container = document.getElementById("numeros-grid");
-      container.innerHTML = "";
-
-      const vazioEsq = document.createElement("div");
-      const zero = document.createElement("div");
-      const vazioDir = document.createElement("div");
-
-      zero.textContent = "0";
-      zero.className = "numero verde zero";
-      zero.onclick = () => validarSelecao(zero, 0);
-      container.appendChild(vazioEsq);
-      container.appendChild(zero);
-      container.appendChild(vazioDir);
-
-      for (let i = 1; i <= 36; i++) {
-        const btn = document.createElement("div");
-        btn.classList.add("numero");
-
-        if (vermelhos.includes(i)) btn.classList.add("vermelho");
-        else if (pretos.includes(i)) btn.classList.add("preto");
-        else btn.classList.add("verde");
-
-        btn.textContent = i;
-        btn.onclick = () => validarSelecao(btn, i);
-        container.appendChild(btn);
-      }
-    }
-
-    function validarSelecao(btn, num) {
-      const corretos = setores[setorAtual];
-      if (btn.classList.contains("selecionado")) return;
-
-      btn.classList.add("selecionado");
-
-      if (corretos.includes(num)) {
-        btn.classList.add("correto");
-      } else {
-        btn.classList.add("errado");
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nível 3 - Setores e Vizinhos</title>
+    <style>
+      /* Estilos gerais */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
-      const totalCorretos = corretos.length;
-      const totalClicados = document.querySelectorAll(".numero.selecionado").length;
-
-      document.getElementById("contador").textContent = `Selecionados: ${totalClicados}/${totalCorretos}`;
-
-      if (totalClicados >= totalCorretos) {
-        const btnVerificar = document.getElementById("btnVerificar");
-        btnVerificar.disabled = false;
-        btnVerificar.classList.add("ativado");
+      body {
+        background-color: #1e1e1e;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        height: 100vh;
+        overflow: hidden;
       }
-    }
 
-    function verificar() {
-      const corretos = setores[setorAtual];
-      const selecionados = Array.from(document.querySelectorAll(".numero.selecionado"));
-      let acertos = 0;
+      h2 {
+        color: #00ffff;
+        margin-bottom: 2px;
+        font-size: 18px;
+        margin-top: 10px;
+      }
 
-      selecionados.forEach(btn => {
-        const num = parseInt(btn.textContent);
-        if (corretos.includes(num)) {
-          acertos++;
+      #contador-container {
+        text-align: center;
+      }
+
+      #contador {
+        margin-bottom: 2px;
+        color: #00ffff;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 80px);
+        gap: 3px;
+        justify-content: center;
+        margin-top: 15px;
+      }
+
+      .numero {
+        position: relative;
+        width: 80px;
+        height: auto;
+        padding: 4px 0;
+        font-size: 16px;
+        font-weight: bold;
+        border: 2px solid #444;
+        border-radius: 6px;
+        cursor: pointer;
+        color: white;
+        background-color: #2c2c2c;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .numero:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+      }
+
+      .vermelho {
+        background-color: #c00000 !important;
+      }
+      .preto {
+        background-color: #000000 !important;
+      }
+      .verde {
+        background-color: #007f00 !important;
+      }
+
+      .verde-brasil {
+        background-color: #009b3a !important;
+      }
+      .amarelo-brasil {
+        background-color: #ffde00 !important;
+      }
+      .azul-brasil {
+        background-color: #002776 !important;
+      }
+      .branco-brasil {
+        background-color: #ffffff !important;
+        color: #000 !important;
+      }
+
+      .numero.selecionado {
+        border: 2px solid gold;
+      }
+
+      .numero.errado::after {
+        content: "X";
+        position: absolute;
+        font-size: 34px;
+        font-weight: bold;
+        color: white;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      .numero.correto::after {
+        content: "✔";
+        position: absolute;
+        font-size: 34px;
+        font-weight: bold;
+        color: #00ff88;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      .zero {
+        grid-column: 2 / span 1;
+      }
+
+      button {
+        padding: 10px 25px;
+        font-size: 16px;
+        background-color: #00ffff;
+        color: #000;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        opacity: 1;
+        transition: all 0.3s ease-in-out;
+      }
+
+      button:hover {
+        opacity: 0.8;
+      }
+
+      button.ativado {
+        background-color: #00ff88;
+        color: #000;
+        cursor: pointer;
+        opacity: 1;
+        box-shadow: 0 0 10px #00ff88aa;
+      }
+
+      button.ativado:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px #00ff88ff;
+        background-color: #00e57a;
+      }
+
+      #resultado {
+        margin-top: 10px;
+        font-weight: bold;
+        min-height: 40px;
+      }
+
+      #controles-principais {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        margin-top: 0;
+      }
+
+      #botoes-modo {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 0;
+      }
+      #botoes-modo button {
+        cursor: pointer;
+        opacity: 1;
+      }
+      #botoes-modo button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px #00ffffaa;
+        opacity: 1;
+      }
+
+      .botao-setor-filtro {
+        padding: 4px 8px;
+        font-size: 12px;
+        background-color: #00ffff;
+        color: #000;
+        border: 1px solid #666;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+      .botao-setor-filtro:hover {
+        background-color: #00c7c7;
+        transform: scale(1.05);
+      }
+
+      .centralizar-botoes {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 5px;
+      }
+
+      #painel-setores {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        margin-top: 5px;
+      }
+
+      #botoes-filtro-setores {
+        display: flex;
+        gap: 5px;
+        margin-top: 2px;
+      }
+
+      /* Estilos para o pop-up */
+      #popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      #popup-content {
+        padding: 20px 40px;
+        font-size: 30px;
+        font-weight: bold;
+        color: #fff;
+        border-radius: 10px;
+        animation: fadeIn 0.5s;
+      }
+      #popup-content.acertou {
+        background-color: #00ff88;
+        color: #000;
+      }
+      #popup-content.errou {
+        background-color: #c00000;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
         }
+        to {
+          opacity: 1;
+        }
+      }
+
+      #vizinhos-display-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 15px;
+        gap: 8px;
+      }
+      #botoes-niveis {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+      }
+      #botoes-niveis button {
+        padding: 6px 12px;
+        font-size: 12px;
+        background-color: #333;
+        color: white;
+        border: 1px solid #666;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      #botoes-niveis button:hover {
+        background-color: #555;
+      }
+      .vizinho-slot {
+        min-width: 24px;
+        min-height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed #666;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+      .vizinho-slot.cheio {
+        border: none;
+        padding: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2 id="pergunta">Selecione uma modalidade</h2>
+    <div id="controles-principais">
+      <div id="botoes-modo">
+        <button id="btnSetores" onclick="iniciarModoSetores()">Setores</button>
+        <button id="btnVizinhos" onclick="iniciarModoVizinhos()">Vizinhos</button>
+      </div>
+    </div>
+
+    <div id="painel-setores" style="display: none">
+      <p id="contador">Selecionados: 0/0</p>
+      <div id="botoes-filtro-setores">
+        <button id="btnVoisins" class="botao-setor-filtro" onclick="destacarSetor('Voisins')">Voisins</button>
+        <button id="btnOrphelins" class="botao-setor-filtro" onclick="destacarSetor('Orphelins')">Orphelins</button>
+        <button id="btnTier" class="botao-setor-filtro" onclick="destacarSetor('Tier')">Tier</button>
+        <button id="btnReset" class="botao-setor-filtro" onclick="destacarSetor('reset')">Reset</button>
+      </div>
+    </div>
+
+    <div id="botoes-niveis" style="display: none">
+      <button onclick="iniciarVizinhosPorNivel(1)">Nível 1</button>
+      <button onclick="iniciarVizinhosPorNivel(2)">Nível 2</button>
+      <button onclick="iniciarVizinhosPorNivel(3)">Nível 3</button>
+      <button onclick="iniciarVizinhosPorNivel(4)">Nível 4</button>
+    </div>
+
+    <div id="vizinhos-display-container" style="display: none"></div>
+
+    <div class="grid" id="numeros-grid"></div>
+
+    <p id="resultado"></p>
+
+    <div id="popup-overlay" style="display: none">
+      <div id="popup-content"></div>
+    </div>
+
+    <script>
+      const vermelhos = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
+      const pretos = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35];
+      const setores = {
+        Voisins: [22, 18, 29, 7, 28, 12, 35, 3, 26, 0, 32, 15, 19, 4, 21, 2, 25],
+        Orphelins: [1, 20, 14, 31, 9, 17, 34, 6],
+        Tier: [27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33],
+      };
+      const sequenciaRoleta = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+      const coresBrasil = {
+        Voisins: "verde-brasil",
+        Tier: "amarelo-brasil",
+        Orphelins: "azul-brasil",
+      };
+
+      let modoAtual = "";
+      let numerosCorretos = [];
+      let numeroSorteado = 0;
+      let vizinhosParaCadaLado = 1;
+
+      function mostrarPopup(mensagem, tipo) {
+        const popupOverlay = document.getElementById("popup-overlay");
+        const popupContent = document.getElementById("popup-content");
+
+        popupContent.textContent = mensagem;
+        popupContent.classList.remove("acertou", "errou");
+        popupContent.classList.add(tipo);
+        popupOverlay.style.display = "flex";
+
+        setTimeout(() => {
+          popupOverlay.style.display = "none";
+        }, 1500);
+      }
+
+      function escolherSetorAleatorio() {
+        const keys = Object.keys(setores);
+        return keys[Math.floor(Math.random() * keys.length)];
+      }
+
+      function iniciarModoSetores() {
+        modoAtual = "setores";
+        const setorAleatorio = escolherSetorAleatorio();
+        numerosCorretos = setores[setorAleatorio];
+        document.getElementById("pergunta").textContent = `Clique nos números ${setorAleatorio}`;
+
+        document.getElementById("painel-setores").style.display = "flex";
+        document.getElementById("vizinhos-display-container").style.display = "none";
+        document.getElementById("numeros-grid").style.display = "grid";
+        document.getElementById("botoes-niveis").style.display = "none";
+
+        reiniciarJogo(numerosCorretos.length, true);
+      }
+
+      function iniciarModoVizinhos() {
+        modoAtual = "selecionar_nivel_vizinhos";
+        document.getElementById("pergunta").textContent = "Selecione o nível de dificuldade";
+
+        document.getElementById("painel-setores").style.display = "none";
+        document.getElementById("vizinhos-display-container").style.display = "none";
+        document.getElementById("numeros-grid").style.display = "none";
+        document.getElementById("botoes-niveis").style.display = "flex";
+      }
+
+      function iniciarVizinhosPorNivel(nivel) {
+        modoAtual = "vizinhos";
+        vizinhosParaCadaLado = nivel;
+
+        document.getElementById("pergunta").textContent = `Preencha os vizinhos de um número`;
+
+        document.getElementById("botoes-niveis").style.display = "none";
+        document.getElementById("vizinhos-display-container").style.display = "flex";
+        document.getElementById("numeros-grid").style.display = "grid";
+
+        numeroSorteado = Math.floor(Math.random() * 37);
+        const indiceSorteado = sequenciaRoleta.indexOf(numeroSorteado);
+        const vizinhosEsquerda = [];
+        const vizinhosDireita = [];
+
+        for (let i = 1; i <= vizinhosParaCadaLado; i++) {
+          const indice = (indiceSorteado - i + sequenciaRoleta.length) % sequenciaRoleta.length;
+          vizinhosEsquerda.push(sequenciaRoleta[indice]);
+        }
+
+        for (let i = 1; i <= vizinhosParaCadaLado; i++) {
+          const indice = (indiceSorteado + i) % sequenciaRoleta.length;
+          vizinhosDireita.push(sequenciaRoleta[indice]);
+        }
+
+        numerosCorretos = [...vizinhosEsquerda.reverse(), numeroSorteado, ...vizinhosDireita];
+
+        const vizinhosDisplay = document.getElementById("vizinhos-display-container");
+        vizinhosDisplay.innerHTML = "";
+
+        vizinhosEsquerda.forEach(() => {
+          const slot = document.createElement("div");
+          slot.classList.add("vizinho-slot");
+          vizinhosDisplay.appendChild(slot);
+        });
+
+        const numeroCentral = document.createElement("div");
+        numeroCentral.classList.add("vizinho-slot", "cheio");
+        numeroCentral.textContent = numeroSorteado;
+
+        if (vermelhos.includes(numeroSorteado)) numeroCentral.style.backgroundColor = "#c00000";
+        else if (pretos.includes(numeroSorteado)) numeroCentral.style.backgroundColor = "#000000";
+        else if (numeroSorteado === 0) numeroCentral.style.backgroundColor = "#007f00";
+        vizinhosDisplay.appendChild(numeroCentral);
+
+        vizinhosDireita.forEach(() => {
+          const slot = document.createElement("div");
+          slot.classList.add("vizinho-slot");
+          vizinhosDisplay.appendChild(slot);
+        });
+
+        reiniciarJogo(vizinhosEsquerda.length + vizinhosDireita.length, true);
+      }
+
+      function destacarSetor(setor) {
+        const numeros = document.querySelectorAll(".numero");
+
+        const botoesFiltro = document.querySelectorAll(".botao-setor-filtro");
+        botoesFiltro.forEach((btn) => btn.classList.remove("selecionado"));
+
+        if (setor === "reset") {
+          numeros.forEach((btn) => {
+            btn.classList.remove("verde-brasil", "amarelo-brasil", "azul-brasil");
+            if (vermelhos.includes(parseInt(btn.textContent))) {
+              btn.classList.add("vermelho");
+            } else if (pretos.includes(parseInt(btn.textContent))) {
+              btn.classList.add("preto");
+            } else if (parseInt(btn.textContent) === 0) {
+              btn.classList.add("verde");
+            }
+          });
+          const botaoReset = document.getElementById("btnReset");
+          if (botaoReset) {
+            botaoReset.classList.add("selecionado");
+          }
+          return;
+        }
+
+        const botaoClicado = document.getElementById(`btn${setor}`);
+        if (botaoClicado) {
+          botaoClicado.classList.add("selecionado");
+        }
+
+        numeros.forEach((btn) => {
+          btn.classList.remove("verde-brasil", "amarelo-brasil", "azul-brasil");
+          if (vermelhos.includes(parseInt(btn.textContent))) {
+            btn.classList.add("vermelho");
+          } else if (pretos.includes(parseInt(btn.textContent))) {
+            btn.classList.add("preto");
+          } else if (parseInt(btn.textContent) === 0) {
+            btn.classList.add("verde");
+          }
+        });
+
+        const cor = coresBrasil[setor];
+
+        numeros.forEach((btn) => {
+          const num = parseInt(btn.textContent);
+          if (setores[setor].includes(num)) {
+            btn.classList.add(cor);
+          }
+        });
+      }
+
+      function reiniciarJogo(totalNecessario, habilitarCliques) {
+        document.getElementById("resultado").textContent = "";
+        gerarGrid(habilitarCliques);
+        if (modoAtual !== "vizinhos") {
+          document.getElementById("contador").textContent = `Selecionados: 0/${totalNecessario}`;
+        }
+      }
+
+      function gerarGrid(habilitarCliques) {
+        const container = document.getElementById("numeros-grid");
+        container.innerHTML = "";
+
+        const vazioEsq = document.createElement("div");
+        const zero = document.createElement("div");
+        const vazioDir = document.createElement("div");
+
+        zero.textContent = "0";
+        zero.className = "numero verde zero";
+        if (habilitarCliques) {
+          zero.onclick = () => validarSelecao(zero, 0);
+          zero.style.cursor = "pointer";
+        } else {
+          zero.onclick = null;
+          zero.style.cursor = "default";
+        }
+        container.appendChild(vazioEsq);
+        container.appendChild(zero);
+        container.appendChild(vazioDir);
+
+        for (let i = 1; i <= 36; i++) {
+          const btn = document.createElement("div");
+          btn.classList.add("numero");
+
+          if (vermelhos.includes(i)) btn.classList.add("vermelho");
+          else if (pretos.includes(i)) btn.classList.add("preto");
+
+          btn.textContent = i;
+          if (habilitarCliques) {
+            btn.onclick = () => validarSelecao(btn, i);
+            btn.style.cursor = "pointer";
+          } else {
+            btn.onclick = null;
+            btn.style.cursor = "default";
+          }
+          container.appendChild(btn);
+        }
+      }
+
+      function validarSelecao(btn, num) {
+        if (btn.classList.contains("selecionado")) {
+          return;
+        } else if (modoAtual === "vizinhos") {
+          const vizinhosDisplay = document.getElementById("vizinhos-display-container");
+          const slotsVazios = Array.from(vizinhosDisplay.querySelectorAll(".vizinho-slot:not(.cheio)"));
+
+          const proximoVizinho = numerosCorretos.find((vizinho) => !Array.from(vizinhosDisplay.querySelectorAll(".cheio")).some((slot) => parseInt(slot.textContent) === vizinho));
+
+          if (slotsVazios.length > 0 && num === proximoVizinho) {
+            btn.classList.add("correto", "usado");
+            const slot = slotsVazios[0];
+            slot.textContent = num;
+            slot.classList.add("cheio");
+
+            const corDoNumero = vermelhos.includes(num) ? "#c00000" : pretos.includes(num) ? "#000000" : "#007f00";
+            slot.style.backgroundColor = corDoNumero;
+
+            const indexToRemove = numerosCorretos.indexOf(num);
+            if (indexToRemove > -1) {
+              numerosCorretos.splice(indexToRemove, 1);
+            }
+
+            if (vizinhosDisplay.querySelectorAll(".vizinho-slot.cheio").length - 1 >= vizinhosParaCadaLado * 2) {
+              mostrarPopup("ACERTOU", "acertou");
+              setTimeout(() => {
+                iniciarVizinhosPorNivel(vizinhosParaCadaLado);
+              }, 2500);
+            }
+          } else {
+            btn.classList.add("errado");
+            mostrarPopup("ERROU", "errou");
+
+            setTimeout(() => {
+              iniciarVizinhosPorNivel(vizinhosParaCadaLado);
+            }, 1500);
+          }
+        } else if (modoAtual === "setores") {
+          btn.classList.add("selecionado");
+
+          if (!numerosCorretos.includes(num)) {
+            btn.classList.add("errado");
+            mostrarPopup("ERROU", "errou");
+
+            setTimeout(() => {
+              iniciarModoSetores();
+            }, 1500);
+            return;
+          }
+
+          btn.classList.add("correto");
+          const totalClicados = document.querySelectorAll(".numero.selecionado").length;
+          const totalCorretos = numerosCorretos.length;
+
+          document.getElementById("contador").textContent = `Selecionados: ${totalClicados}/${totalCorretos}`;
+
+          if (totalClicados >= totalCorretos) {
+            mostrarPopup("ACERTOU", "acertou");
+
+            setTimeout(() => {
+              iniciarModoSetores();
+            }, 2500);
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        iniciarModoSetores();
       });
-
-      const msg = `Acertou: ${acertos}/${corretos.length}`;
-      document.getElementById("resultado").innerHTML = msg;
-
-      // Reset botão e próxima pergunta após 2,5s
-      const btnVerificar = document.getElementById("btnVerificar");
-      btnVerificar.disabled = true;
-      btnVerificar.classList.remove("ativado");
-
-      setTimeout(() => {
-        novaPergunta();
-      }, 2500);
-    }
-
-    novaPergunta();
-  </script>
-</body>
+    </script>
+  </body>
 </html>
