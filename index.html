@@ -296,10 +296,10 @@
         border: 1px dashed #666;
         border-radius: 4px;
         font-size: 12px;
+        padding: 3px;
       }
       .vizinho-slot.cheio {
         border: none;
-        padding: 3px;
       }
     </style>
   </head>
@@ -406,7 +406,7 @@
         modoAtual = "vizinhos";
         vizinhosParaCadaLado = nivel;
 
-        document.getElementById("pergunta").textContent = `Preencha os vizinhos de um número`;
+        document.getElementById("pergunta").textContent = `Clique nos ${nivel * 2} vizinhos do número abaixo`;
 
         document.getElementById("botoes-niveis").style.display = "none";
         document.getElementById("vizinhos-display-container").style.display = "flex";
@@ -427,7 +427,8 @@
           vizinhosDireita.push(sequenciaRoleta[indice]);
         }
 
-        numerosCorretos = [...vizinhosEsquerda.reverse(), numeroSorteado, ...vizinhosDireita];
+        // CORREÇÃO: `numerosCorretos` agora contém apenas os vizinhos a serem clicados.
+        numerosCorretos = [...vizinhosEsquerda, ...vizinhosDireita];
 
         const vizinhosDisplay = document.getElementById("vizinhos-display-container");
         vizinhosDisplay.innerHTML = "";
@@ -453,12 +454,11 @@
           vizinhosDisplay.appendChild(slot);
         });
 
-        reiniciarJogo(vizinhosEsquerda.length + vizinhosDireita.length, true);
+        reiniciarJogo(numerosCorretos.length, true);
       }
 
       function destacarSetor(setor) {
         const numeros = document.querySelectorAll(".numero");
-
         const botoesFiltro = document.querySelectorAll(".botao-setor-filtro");
         botoesFiltro.forEach((btn) => btn.classList.remove("selecionado"));
 
@@ -509,7 +509,7 @@
       function reiniciarJogo(totalNecessario, habilitarCliques) {
         document.getElementById("resultado").textContent = "";
         gerarGrid(habilitarCliques);
-        if (modoAtual !== "vizinhos") {
+        if (modoAtual === "setores") {
           document.getElementById("contador").textContent = `Selecionados: 0/${totalNecessario}`;
         }
       }
@@ -555,38 +555,45 @@
       }
 
       function validarSelecao(btn, num) {
-        if (btn.classList.contains("selecionado")) {
+        // Impede o clique em um número já selecionado/usado
+        if (btn.classList.contains("selecionado") || btn.classList.contains("usado")) {
           return;
-        } else if (modoAtual === "vizinhos") {
-          const vizinhosDisplay = document.getElementById("vizinhos-display-container");
-          const slotsVazios = Array.from(vizinhosDisplay.querySelectorAll(".vizinho-slot:not(.cheio)"));
+        }
 
-          const proximoVizinho = numerosCorretos.find((vizinho) => !Array.from(vizinhosDisplay.querySelectorAll(".cheio")).some((slot) => parseInt(slot.textContent) === vizinho));
+        if (modoAtual === "vizinhos") {
+          // LÓGICA CORRIGIDA PARA O MODO VIZINHOS
+          const indexDoVizinho = numerosCorretos.indexOf(num);
 
-          if (slotsVazios.length > 0 && num === proximoVizinho) {
+          // Verifica se o número clicado é um dos vizinhos corretos
+          if (indexDoVizinho !== -1) {
+            // Acertou!
             btn.classList.add("correto", "usado");
-            const slot = slotsVazios[0];
-            slot.textContent = num;
-            slot.classList.add("cheio");
 
-            const corDoNumero = vermelhos.includes(num) ? "#c00000" : pretos.includes(num) ? "#000000" : "#007f00";
-            slot.style.backgroundColor = corDoNumero;
+            // Remove o número da lista de vizinhos a serem encontrados
+            numerosCorretos.splice(indexDoVizinho, 1);
 
-            const indexToRemove = numerosCorretos.indexOf(num);
-            if (indexToRemove > -1) {
-              numerosCorretos.splice(indexToRemove, 1);
+            // Preenche o próximo slot vazio no display
+            const vizinhosDisplay = document.getElementById("vizinhos-display-container");
+            const slotVazio = vizinhosDisplay.querySelector(".vizinho-slot:not(.cheio)");
+
+            if (slotVazio) {
+              slotVazio.textContent = num;
+              slotVazio.classList.add("cheio");
+              const corDoNumero = vermelhos.includes(num) ? "#c00000" : pretos.includes(num) ? "#000000" : "#007f00";
+              slotVazio.style.backgroundColor = corDoNumero;
             }
 
-            if (vizinhosDisplay.querySelectorAll(".vizinho-slot.cheio").length - 1 >= vizinhosParaCadaLado * 2) {
+            // Se a lista de vizinhos a encontrar está vazia, o jogador venceu
+            if (numerosCorretos.length === 0) {
               mostrarPopup("ACERTOU", "acertou");
               setTimeout(() => {
                 iniciarVizinhosPorNivel(vizinhosParaCadaLado);
               }, 2500);
             }
           } else {
+            // Errou!
             btn.classList.add("errado");
             mostrarPopup("ERROU", "errou");
-
             setTimeout(() => {
               iniciarVizinhosPorNivel(vizinhosParaCadaLado);
             }, 1500);
@@ -606,13 +613,12 @@
 
           btn.classList.add("correto");
           const totalClicados = document.querySelectorAll(".numero.selecionado").length;
-          const totalCorretos = numerosCorretos.length;
+          const totalCorretos = document.getElementById("contador").textContent.split("/")[1];
 
           document.getElementById("contador").textContent = `Selecionados: ${totalClicados}/${totalCorretos}`;
 
-          if (totalClicados >= totalCorretos) {
+          if (totalClicados >= parseInt(totalCorretos)) {
             mostrarPopup("ACERTOU", "acertou");
-
             setTimeout(() => {
               iniciarModoSetores();
             }, 2500);
