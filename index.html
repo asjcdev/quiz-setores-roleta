@@ -21,11 +21,12 @@
         overflow: hidden;
       }
 
+      /* ===== MUDANÇA DE TAMANHO ===== */
       h2 {
         color: #00ffff;
-        margin-bottom: 2px;
-        font-size: 18px;
-        margin-top: 10px;
+        margin-bottom: 5px;
+        font-size: 22px; /* Aumentado */
+        margin-top: 15px;
       }
 
       #contador-container {
@@ -37,23 +38,25 @@
         color: #00ffff;
       }
 
+      /* ===== MUDANÇA DE TAMANHO ===== */
       .grid {
         display: grid;
-        grid-template-columns: repeat(3, 80px);
-        gap: 3px;
+        grid-template-columns: repeat(3, 100px); /* Aumentado */
+        gap: 5px; /* Aumentado */
         justify-content: center;
-        margin-top: 15px;
+        margin-top: 20px;
       }
 
+      /* ===== MUDANÇA DE TAMANHO ===== */
       .numero {
         position: relative;
-        width: 80px;
-        height: auto;
-        padding: 4px 0;
-        font-size: 16px;
+        width: 100px; /* Aumentado */
+        height: 30px; /* Adicionado para consistência */
+        padding: 8px 0; /* Aumentado */
+        font-size: 20px; /* Aumentado */
         font-weight: bold;
         border: 2px solid #444;
-        border-radius: 6px;
+        border-radius: 2px; /* Aumentado */
         cursor: pointer;
         color: white;
         background-color: #2c2c2c;
@@ -99,7 +102,7 @@
       .numero.errado::after {
         content: "X";
         position: absolute;
-        font-size: 34px;
+        font-size: 40px; /* Aumentado */
         font-weight: bold;
         color: white;
         top: 50%;
@@ -111,7 +114,7 @@
       .numero.correto::after {
         content: "✔";
         position: absolute;
-        font-size: 34px;
+        font-size: 40px; /* Aumentado */
         font-weight: bold;
         color: #00ff88;
         top: 50%;
@@ -124,9 +127,10 @@
         grid-column: 2 / span 1;
       }
 
+      /* ===== MUDANÇA DE TAMANHO ===== */
       button {
-        padding: 10px 25px;
-        font-size: 16px;
+        padding: 12px 30px; /* Aumentado */
+        font-size: 18px; /* Aumentado */
         background-color: #00ffff;
         color: #000;
         border: none;
@@ -172,11 +176,7 @@
         display: flex;
         justify-content: center;
         gap: 10px;
-        margin-top: 0;
-      }
-      #botoes-modo button {
-        cursor: pointer;
-        opacity: 1;
+        margin-top: 10px;
       }
       #botoes-modo button:hover {
         transform: scale(1.05);
@@ -184,9 +184,10 @@
         opacity: 1;
       }
 
+      /* ===== MUDANÇA DE TAMANHO ===== */
       .botao-setor-filtro {
-        padding: 4px 8px;
-        font-size: 12px;
+        padding: 6px 10px; /* Aumentado */
+        font-size: 14px; /* Aumentado */
         background-color: #00ffff;
         color: #000;
         border: 1px solid #666;
@@ -212,7 +213,7 @@
         align-items: center;
         justify-content: center;
         gap: 2px;
-        margin-top: 5px;
+        margin-top: 10px;
       }
 
       #botoes-filtro-setores {
@@ -221,7 +222,6 @@
         margin-top: 2px;
       }
 
-      /* Estilos para o pop-up */
       #popup-overlay {
         position: fixed;
         top: 0;
@@ -258,25 +258,28 @@
         }
       }
 
+      /* ===== MUDANÇA DE TAMANHO ===== */
       #vizinhos-display-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 16px;
+        font-size: 20px; /* Aumentado */
         font-weight: bold;
         margin-top: 15px;
-        gap: 8px;
+        gap: 10px; /* Aumentado */
       }
+      /* ===== MUDANÇA DE TAMANHO ===== */
       #botoes-niveis {
         display: flex;
         justify-content: center;
         gap: 8px;
-        margin-top: 8px;
+        margin-top: 15px; /* Aumentado */
         margin-bottom: 8px;
       }
+      /* ===== MUDANÇA DE TAMANHO ===== */
       #botoes-niveis button {
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 8px 14px; /* Aumentado */
+        font-size: 14px; /* Aumentado */
         background-color: #333;
         color: white;
         border: 1px solid #666;
@@ -287,19 +290,21 @@
       #botoes-niveis button:hover {
         background-color: #555;
       }
+      /* ===== MUDANÇA DE TAMANHO ===== */
       .vizinho-slot {
-        min-width: 24px;
-        min-height: 24px;
+        min-width: 30px; /* Aumentado */
+        min-height: 30px; /* Aumentado */
         display: flex;
         align-items: center;
         justify-content: center;
         border: 1px dashed #666;
         border-radius: 4px;
-        font-size: 12px;
-        padding: 3px;
+        font-size: 16px; /* Aumentado */
+        padding: 4px; /* Aumentado */
       }
       .vizinho-slot.cheio {
         border: none;
+        padding: 4px; /* Aumentado */
       }
     </style>
   </head>
@@ -357,7 +362,6 @@
       let modoAtual = "";
       let numerosCorretos = [];
       let numeroSorteado = 0;
-      let vizinhosParaCadaLado = 1;
 
       function mostrarPopup(mensagem, tipo) {
         const popupOverlay = document.getElementById("popup-overlay");
@@ -404,53 +408,58 @@
 
       function iniciarVizinhosPorNivel(nivel) {
         modoAtual = "vizinhos";
-        vizinhosParaCadaLado = nivel;
 
-        document.getElementById("pergunta").textContent = `Clique nos ${nivel * 2} vizinhos do número abaixo`;
+        const grid = document.getElementById("numeros-grid");
+        grid.dataset.currentLevel = nivel;
+
+        document.getElementById("pergunta").textContent = `Preencha ${nivel} vizinho${nivel > 1 ? "s" : ""} de cada lado`;
 
         document.getElementById("botoes-niveis").style.display = "none";
         document.getElementById("vizinhos-display-container").style.display = "flex";
-        document.getElementById("numeros-grid").style.display = "grid";
+        grid.style.display = "grid";
 
         numeroSorteado = Math.floor(Math.random() * 37);
         const indiceSorteado = sequenciaRoleta.indexOf(numeroSorteado);
         const vizinhosEsquerda = [];
         const vizinhosDireita = [];
 
-        for (let i = 1; i <= vizinhosParaCadaLado; i++) {
+        for (let i = 1; i <= nivel; i++) {
           const indice = (indiceSorteado - i + sequenciaRoleta.length) % sequenciaRoleta.length;
           vizinhosEsquerda.push(sequenciaRoleta[indice]);
         }
 
-        for (let i = 1; i <= vizinhosParaCadaLado; i++) {
+        for (let i = 1; i <= nivel; i++) {
           const indice = (indiceSorteado + i) % sequenciaRoleta.length;
           vizinhosDireita.push(sequenciaRoleta[indice]);
         }
 
-        // CORREÇÃO: `numerosCorretos` agora contém apenas os vizinhos a serem clicados.
         numerosCorretos = [...vizinhosEsquerda, ...vizinhosDireita];
 
         const vizinhosDisplay = document.getElementById("vizinhos-display-container");
         vizinhosDisplay.innerHTML = "";
 
-        vizinhosEsquerda.forEach(() => {
+        vizinhosEsquerda.reverse().forEach((vizinhoNum) => {
           const slot = document.createElement("div");
           slot.classList.add("vizinho-slot");
+          slot.dataset.numero = vizinhoNum;
           vizinhosDisplay.appendChild(slot);
         });
 
         const numeroCentral = document.createElement("div");
         numeroCentral.classList.add("vizinho-slot", "cheio");
-        numeroCentral.textContent = numeroSorteado;
+
+        // ===== AQUI ESTÁ A MUDANÇA DOS PARÊNTESES =====
+        numeroCentral.textContent = `(${numeroSorteado})`;
 
         if (vermelhos.includes(numeroSorteado)) numeroCentral.style.backgroundColor = "#c00000";
         else if (pretos.includes(numeroSorteado)) numeroCentral.style.backgroundColor = "#000000";
         else if (numeroSorteado === 0) numeroCentral.style.backgroundColor = "#007f00";
         vizinhosDisplay.appendChild(numeroCentral);
 
-        vizinhosDireita.forEach(() => {
+        vizinhosDireita.forEach((vizinhoNum) => {
           const slot = document.createElement("div");
           slot.classList.add("vizinho-slot");
+          slot.dataset.numero = vizinhoNum;
           vizinhosDisplay.appendChild(slot);
         });
 
@@ -555,47 +564,39 @@
       }
 
       function validarSelecao(btn, num) {
-        // Impede o clique em um número já selecionado/usado
         if (btn.classList.contains("selecionado") || btn.classList.contains("usado")) {
           return;
         }
 
         if (modoAtual === "vizinhos") {
-          // LÓGICA CORRIGIDA PARA O MODO VIZINHOS
           const indexDoVizinho = numerosCorretos.indexOf(num);
 
-          // Verifica se o número clicado é um dos vizinhos corretos
           if (indexDoVizinho !== -1) {
-            // Acertou!
             btn.classList.add("correto", "usado");
-
-            // Remove o número da lista de vizinhos a serem encontrados
             numerosCorretos.splice(indexDoVizinho, 1);
 
-            // Preenche o próximo slot vazio no display
-            const vizinhosDisplay = document.getElementById("vizinhos-display-container");
-            const slotVazio = vizinhosDisplay.querySelector(".vizinho-slot:not(.cheio)");
+            const slotCorreto = document.querySelector(`.vizinho-slot[data-numero="${num}"]`);
 
-            if (slotVazio) {
-              slotVazio.textContent = num;
-              slotVazio.classList.add("cheio");
+            if (slotCorreto) {
+              slotCorreto.textContent = num;
+              slotCorreto.classList.add("cheio");
               const corDoNumero = vermelhos.includes(num) ? "#c00000" : pretos.includes(num) ? "#000000" : "#007f00";
-              slotVazio.style.backgroundColor = corDoNumero;
+              slotCorreto.style.backgroundColor = corDoNumero;
             }
 
-            // Se a lista de vizinhos a encontrar está vazia, o jogador venceu
             if (numerosCorretos.length === 0) {
               mostrarPopup("ACERTOU", "acertou");
               setTimeout(() => {
-                iniciarVizinhosPorNivel(vizinhosParaCadaLado);
+                const nivelAtual = document.getElementById("numeros-grid").dataset.currentLevel;
+                iniciarVizinhosPorNivel(nivelAtual);
               }, 2500);
             }
           } else {
-            // Errou!
             btn.classList.add("errado");
             mostrarPopup("ERROU", "errou");
             setTimeout(() => {
-              iniciarVizinhosPorNivel(vizinhosParaCadaLado);
+              const nivelAtual = document.getElementById("numeros-grid").dataset.currentLevel;
+              iniciarVizinhosPorNivel(nivelAtual);
             }, 1500);
           }
         } else if (modoAtual === "setores") {
@@ -604,7 +605,6 @@
           if (!numerosCorretos.includes(num)) {
             btn.classList.add("errado");
             mostrarPopup("ERROU", "errou");
-
             setTimeout(() => {
               iniciarModoSetores();
             }, 1500);
