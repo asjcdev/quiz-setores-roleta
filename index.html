@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nível 3 - Setores e Vizinhos</title>
+    <title>Treinador de Roleta</title>
     <style>
       /* Estilos gerais */
       * {
@@ -17,16 +17,17 @@
         color: white;
         font-family: Arial, sans-serif;
         text-align: center;
-        height: 100vh;
-        overflow: hidden;
+        height: 120vh;
+        overflow-y: hidden;
+        padding: 0px;
       }
 
-      /* ===== MUDANÇA DE TAMANHO ===== */
-      h2 {
+      /* --- ESTILOS DO JOGO PRINCIPAL (TREINO) --- */
+      #modo-treino h2 {
         color: #00ffff;
-        margin-bottom: 5px;
-        font-size: 22px; /* Aumentado */
-        margin-top: 15px;
+        margin-bottom: 0px;
+        font-size: 22px;
+        margin-top: 0px;
       }
 
       #contador-container {
@@ -38,25 +39,23 @@
         color: #00ffff;
       }
 
-      /* ===== MUDANÇA DE TAMANHO ===== */
       .grid {
         display: grid;
-        grid-template-columns: repeat(3, 100px); /* Aumentado */
-        gap: 5px; /* Aumentado */
+        grid-template-columns: repeat(3, 125px);
+        gap: 0px;
         justify-content: center;
-        margin-top: 20px;
+        margin-top: 10px;
       }
 
-      /* ===== MUDANÇA DE TAMANHO ===== */
       .numero {
         position: relative;
-        width: 100px; /* Aumentado */
-        height: 30px; /* Adicionado para consistência */
-        padding: 8px 0; /* Aumentado */
-        font-size: 20px; /* Aumentado */
+        width: 125px;
+        height: 35px;
+        padding: 10px 0;
+        font-size: 20px;
         font-weight: bold;
         border: 2px solid #444;
-        border-radius: 2px; /* Aumentado */
+        border-radius: 2px;
         cursor: pointer;
         color: white;
         background-color: #2c2c2c;
@@ -74,9 +73,11 @@
       .vermelho {
         background-color: #c00000 !important;
       }
+
       .preto {
         background-color: #000000 !important;
       }
+
       .verde {
         background-color: #007f00 !important;
       }
@@ -84,12 +85,15 @@
       .verde-brasil {
         background-color: #009b3a !important;
       }
+
       .amarelo-brasil {
         background-color: #ffde00 !important;
       }
+
       .azul-brasil {
         background-color: #002776 !important;
       }
+
       .branco-brasil {
         background-color: #ffffff !important;
         color: #000 !important;
@@ -102,7 +106,7 @@
       .numero.errado::after {
         content: "X";
         position: absolute;
-        font-size: 40px; /* Aumentado */
+        font-size: 40px;
         font-weight: bold;
         color: white;
         top: 50%;
@@ -114,7 +118,7 @@
       .numero.correto::after {
         content: "✔";
         position: absolute;
-        font-size: 40px; /* Aumentado */
+        font-size: 40px;
         font-weight: bold;
         color: #00ff88;
         top: 50%;
@@ -127,35 +131,26 @@
         grid-column: 2 / span 1;
       }
 
-      /* ===== MUDANÇA DE TAMANHO ===== */
-      button {
-        padding: 12px 30px; /* Aumentado */
-        font-size: 18px; /* Aumentado */
+      #botoes-modo button {
+        padding: 12px 30px;
+        font-size: 18px;
         background-color: #00ffff;
         color: #000;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        opacity: 1;
+        opacity: 0.7; /* Opacidade padrão */
         transition: all 0.3s ease-in-out;
       }
 
-      button:hover {
-        opacity: 0.8;
+      #botoes-modo button.ativo,
+      #botoes-modo button:hover {
+        opacity: 1; /* Totalmente visível quando ativo ou hover */
       }
 
-      button.ativado {
-        background-color: #00ff88;
-        color: #000;
-        cursor: pointer;
-        opacity: 1;
-        box-shadow: 0 0 10px #00ff88aa;
-      }
-
-      button.ativado:hover {
+      #botoes-modo button.ativo {
+        box-shadow: 0 0 10px #00ffffaa;
         transform: scale(1.05);
-        box-shadow: 0 0 15px #00ff88ff;
-        background-color: #00e57a;
       }
 
       #resultado {
@@ -177,17 +172,12 @@
         justify-content: center;
         gap: 10px;
         margin-top: 10px;
-      }
-      #botoes-modo button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 10px #00ffffaa;
-        opacity: 1;
+        margin-bottom: 20px;
       }
 
-      /* ===== MUDANÇA DE TAMANHO ===== */
       .botao-setor-filtro {
-        padding: 6px 10px; /* Aumentado */
-        font-size: 14px; /* Aumentado */
+        padding: 6px 10px;
+        font-size: 14px;
         background-color: #00ffff;
         color: #000;
         border: 1px solid #666;
@@ -195,16 +185,10 @@
         cursor: pointer;
         transition: all 0.3s ease-in-out;
       }
+
       .botao-setor-filtro:hover {
         background-color: #00c7c7;
         transform: scale(1.05);
-      }
-
-      .centralizar-botoes {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 5px;
       }
 
       #painel-setores {
@@ -234,6 +218,7 @@
         align-items: center;
         z-index: 1000;
       }
+
       #popup-content {
         padding: 20px 40px;
         font-size: 30px;
@@ -242,44 +227,47 @@
         border-radius: 10px;
         animation: fadeIn 0.5s;
       }
+
       #popup-content.acertou {
         background-color: #00ff88;
         color: #000;
       }
+
       #popup-content.errou {
         background-color: #c00000;
       }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
         }
+
         to {
           opacity: 1;
         }
       }
 
-      /* ===== MUDANÇA DE TAMANHO ===== */
       #vizinhos-display-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 20px; /* Aumentado */
+        font-size: 20px;
         font-weight: bold;
         margin-top: 15px;
-        gap: 10px; /* Aumentado */
+        gap: 10px;
       }
-      /* ===== MUDANÇA DE TAMANHO ===== */
+
       #botoes-niveis {
         display: flex;
         justify-content: center;
         gap: 8px;
-        margin-top: 15px; /* Aumentado */
+        margin-top: 15px;
         margin-bottom: 8px;
       }
-      /* ===== MUDANÇA DE TAMANHO ===== */
+
       #botoes-niveis button {
-        padding: 8px 14px; /* Aumentado */
-        font-size: 14px; /* Aumentado */
+        padding: 8px 14px;
+        font-size: 14px;
         background-color: #333;
         color: white;
         border: 1px solid #666;
@@ -287,81 +275,178 @@
         cursor: pointer;
         transition: background-color 0.2s ease;
       }
+
       #botoes-niveis button:hover {
         background-color: #555;
       }
-      /* ===== MUDANÇA DE TAMANHO ===== */
+
       .vizinho-slot {
-        min-width: 30px; /* Aumentado */
-        min-height: 30px; /* Aumentado */
+        min-width: 30px;
+        min-height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
         border: 1px dashed #666;
         border-radius: 4px;
-        font-size: 16px; /* Aumentado */
-        padding: 4px; /* Aumentado */
+        font-size: 16px;
+        padding: 4px;
       }
+
       .vizinho-slot.cheio {
         border: none;
-        padding: 4px; /* Aumentado */
+        padding: 4px;
+      }
+
+      /* --- ESTILOS DO PROJETO QUIZ (ISOLADOS) --- */
+      #modo-quiz .card {
+        background-color: #2a2a2a;
+        padding: 25px 25px;
+        margin: auto;
+        max-width: 370px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+      }
+
+      #modo-quiz button {
+        margin: 10px 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        background: linear-gradient(to bottom, #4f4f4f, #2e2e2e);
+        color: white;
+        box-shadow: inset 0 0 2px #ffffff44, 0 0 5px #00000066;
+        transition: all 0.2s ease-in-out;
+        opacity: 1; /* Garantir que a opacidade padrão do quiz seja 1 */
+      }
+
+      #modo-quiz button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px #09a71455;
+      }
+
+      #modo-quiz .toggle-group {
+        margin-bottom: 50px;
+      }
+
+      #modo-quiz #feedback {
+        font-weight: bold;
+        margin-top: 15px;
+        min-height: 125px;
+        color: #00ffff;
+      }
+
+      #modo-quiz input {
+        padding: 16px;
+        width: 100%;
+        font-size: 16px;
+        background-color: #2e2e2e;
+        color: #00ffff;
+        border: 1px solid #555;
+        border-radius: 5px;
+      }
+
+      #modo-quiz h2,
+      #modo-quiz h3 {
+        color: #00ffff;
+      }
+
+      #modo-quiz .correct {
+        color: #00ff88;
+        font-weight: bold;
+      }
+
+      #modo-quiz .wrong {
+        color: #ff4444;
+        font-weight: bold;
       }
     </style>
   </head>
+
   <body>
-    <h2 id="pergunta">Selecione uma modalidade</h2>
     <div id="controles-principais">
       <div id="botoes-modo">
-        <button id="btnSetores" onclick="iniciarModoSetores()">Setores</button>
-        <button id="btnVizinhos" onclick="iniciarModoVizinhos()">Vizinhos</button>
+        <button id="btnSetores" onclick="mudarModo('setores')">Setores</button>
+        <button id="btnVizinhos" onclick="mudarModo('vizinhos')">Vizinhos</button>
+        <button id="btnQuiz" onclick="mudarModo('quiz')">Quiz</button>
       </div>
     </div>
 
-    <div id="painel-setores" style="display: none">
-      <p id="contador">Selecionados: 0/0</p>
-      <div id="botoes-filtro-setores">
-        <button id="btnVoisins" class="botao-setor-filtro" onclick="destacarSetor('Voisins')">Voisins</button>
-        <button id="btnOrphelins" class="botao-setor-filtro" onclick="destacarSetor('Orphelins')">Orphelins</button>
-        <button id="btnTier" class="botao-setor-filtro" onclick="destacarSetor('Tier')">Tier</button>
-        <button id="btnReset" class="botao-setor-filtro" onclick="destacarSetor('reset')">Reset</button>
+    <div id="modo-treino" style="display: none">
+      <h2 id="pergunta">Selecione uma modalidade</h2>
+
+      <div id="painel-setores" style="display: none">
+        <p id="contador">Selecionados: 0/0</p>
+        <div id="botoes-filtro-setores">
+          <button id="btnVoisins" class="botao-setor-filtro" onclick="destacarSetor('Voisins')">Voisins</button>
+          <button id="btnOrphelins" class="botao-setor-filtro" onclick="destacarSetor('Orphelins')">Orphelins</button>
+          <button id="btnTier" class="botao-setor-filtro" onclick="destacarSetor('Tier')">Tier</button>
+          <button id="btnReset" class="botao-setor-filtro" onclick="destacarSetor('reset')">Reset</button>
+        </div>
+      </div>
+
+      <div id="botoes-niveis" style="display: none">
+        <button onclick="iniciarVizinhosPorNivel(1)">Nível 1</button>
+        <button onclick="iniciarVizinhosPorNivel(2)">Nível 2</button>
+        <button onclick="iniciarVizinhosPorNivel(3)">Nível 3</button>
+        <button onclick="iniciarVizinhosPorNivel(4)">Nível 4</button>
+      </div>
+
+      <div id="vizinhos-display-container" style="display: none"></div>
+
+      <div class="grid" id="numeros-grid"></div>
+
+      <p id="resultado"></p>
+    </div>
+
+    <div id="modo-quiz" style="display: none">
+      <div class="card">
+        <div class="toggle-group" id="config">
+          <strong>Escolha a quantidade de vizinhos:</strong><br />
+          <button class="btn-vizinho-quiz" data-n="1">1</button>
+          <button class="btn-vizinho-quiz" data-n="2">2</button>
+          <button class="btn-vizinho-quiz" data-n="3">3</button>
+        </div>
+        <h2 id="status"></h2>
+        <h3 id="question"></h3>
+        <div id="options"></div>
+        <div id="input-area" style="display: none">
+          <p>Digite os vizinhos (ex: 0, 15):</p>
+          <input type="text" id="vizinhos-input" placeholder="Ex: 0, 15" />
+          <br />
+          <button id="btn-verificar-vizinhos">Verificar</button>
+        </div>
+        <p id="feedback"></p>
+        <button id="btn-proxima">Próxima</button>
       </div>
     </div>
-
-    <div id="botoes-niveis" style="display: none">
-      <button onclick="iniciarVizinhosPorNivel(1)">Nível 1</button>
-      <button onclick="iniciarVizinhosPorNivel(2)">Nível 2</button>
-      <button onclick="iniciarVizinhosPorNivel(3)">Nível 3</button>
-      <button onclick="iniciarVizinhosPorNivel(4)">Nível 4</button>
-    </div>
-
-    <div id="vizinhos-display-container" style="display: none"></div>
-
-    <div class="grid" id="numeros-grid"></div>
-
-    <p id="resultado"></p>
 
     <div id="popup-overlay" style="display: none">
       <div id="popup-content"></div>
     </div>
 
     <script>
-      const vermelhos = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
-      const pretos = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35];
-      const setores = {
-        Voisins: [22, 18, 29, 7, 28, 12, 35, 3, 26, 0, 32, 15, 19, 4, 21, 2, 25],
-        Orphelins: [1, 20, 14, 31, 9, 17, 34, 6],
-        Tier: [27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33],
+      // --- LÓGICA DO JOGO PRINCIPAL (TREINO) ---
+      const treino = {
+        vermelhos: [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36],
+        pretos: [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35],
+        setores: {
+          Voisins: [22, 18, 29, 7, 28, 12, 35, 3, 26, 0, 32, 15, 19, 4, 21, 2, 25],
+          Orphelins: [1, 20, 14, 31, 9, 17, 34, 6],
+          Tier: [27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33],
+        },
+        sequenciaRoleta: [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26],
+        coresBrasil: {
+          Voisins: "verde-brasil",
+          Tier: "amarelo-brasil",
+          Orphelins: "azul-brasil",
+        },
+        modoAtual: "",
+        numerosCorretos: [],
+        numeroSorteado: 0,
       };
-      const sequenciaRoleta = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
-      const coresBrasil = {
-        Voisins: "verde-brasil",
-        Tier: "amarelo-brasil",
-        Orphelins: "azul-brasil",
-      };
-
-      let modoAtual = "";
-      let numerosCorretos = [];
-      let numeroSorteado = 0;
 
       function mostrarPopup(mensagem, tipo) {
         const popupOverlay = document.getElementById("popup-overlay");
@@ -378,14 +463,14 @@
       }
 
       function escolherSetorAleatorio() {
-        const keys = Object.keys(setores);
+        const keys = Object.keys(treino.setores);
         return keys[Math.floor(Math.random() * keys.length)];
       }
 
       function iniciarModoSetores() {
-        modoAtual = "setores";
+        treino.modoAtual = "setores";
         const setorAleatorio = escolherSetorAleatorio();
-        numerosCorretos = setores[setorAleatorio];
+        treino.numerosCorretos = treino.setores[setorAleatorio];
         document.getElementById("pergunta").textContent = `Clique nos números ${setorAleatorio}`;
 
         document.getElementById("painel-setores").style.display = "flex";
@@ -393,11 +478,11 @@
         document.getElementById("numeros-grid").style.display = "grid";
         document.getElementById("botoes-niveis").style.display = "none";
 
-        reiniciarJogo(numerosCorretos.length, true);
+        reiniciarJogo(treino.numerosCorretos.length, true);
       }
 
       function iniciarModoVizinhos() {
-        modoAtual = "selecionar_nivel_vizinhos";
+        treino.modoAtual = "selecionar_nivel_vizinhos";
         document.getElementById("pergunta").textContent = "Selecione o nível de dificuldade";
 
         document.getElementById("painel-setores").style.display = "none";
@@ -407,7 +492,7 @@
       }
 
       function iniciarVizinhosPorNivel(nivel) {
-        modoAtual = "vizinhos";
+        treino.modoAtual = "vizinhos";
 
         const grid = document.getElementById("numeros-grid");
         grid.dataset.currentLevel = nivel;
@@ -418,22 +503,22 @@
         document.getElementById("vizinhos-display-container").style.display = "flex";
         grid.style.display = "grid";
 
-        numeroSorteado = Math.floor(Math.random() * 37);
-        const indiceSorteado = sequenciaRoleta.indexOf(numeroSorteado);
+        treino.numeroSorteado = Math.floor(Math.random() * 37);
+        const indiceSorteado = treino.sequenciaRoleta.indexOf(treino.numeroSorteado);
         const vizinhosEsquerda = [];
         const vizinhosDireita = [];
 
         for (let i = 1; i <= nivel; i++) {
-          const indice = (indiceSorteado - i + sequenciaRoleta.length) % sequenciaRoleta.length;
-          vizinhosEsquerda.push(sequenciaRoleta[indice]);
+          const indice = (indiceSorteado - i + treino.sequenciaRoleta.length) % treino.sequenciaRoleta.length;
+          vizinhosEsquerda.push(treino.sequenciaRoleta[indice]);
         }
 
         for (let i = 1; i <= nivel; i++) {
-          const indice = (indiceSorteado + i) % sequenciaRoleta.length;
-          vizinhosDireita.push(sequenciaRoleta[indice]);
+          const indice = (indiceSorteado + i) % treino.sequenciaRoleta.length;
+          vizinhosDireita.push(treino.sequenciaRoleta[indice]);
         }
 
-        numerosCorretos = [...vizinhosEsquerda, ...vizinhosDireita];
+        treino.numerosCorretos = [...vizinhosEsquerda, ...vizinhosDireita];
 
         const vizinhosDisplay = document.getElementById("vizinhos-display-container");
         vizinhosDisplay.innerHTML = "";
@@ -447,13 +532,11 @@
 
         const numeroCentral = document.createElement("div");
         numeroCentral.classList.add("vizinho-slot", "cheio");
+        numeroCentral.textContent = `(${treino.numeroSorteado})`;
 
-        // ===== AQUI ESTÁ A MUDANÇA DOS PARÊNTESES =====
-        numeroCentral.textContent = `(${numeroSorteado})`;
-
-        if (vermelhos.includes(numeroSorteado)) numeroCentral.style.backgroundColor = "#c00000";
-        else if (pretos.includes(numeroSorteado)) numeroCentral.style.backgroundColor = "#000000";
-        else if (numeroSorteado === 0) numeroCentral.style.backgroundColor = "#007f00";
+        if (treino.vermelhos.includes(treino.numeroSorteado)) numeroCentral.style.backgroundColor = "#c00000";
+        else if (treino.pretos.includes(treino.numeroSorteado)) numeroCentral.style.backgroundColor = "#000000";
+        else if (treino.numeroSorteado === 0) numeroCentral.style.backgroundColor = "#007f00";
         vizinhosDisplay.appendChild(numeroCentral);
 
         vizinhosDireita.forEach((vizinhoNum) => {
@@ -463,7 +546,7 @@
           vizinhosDisplay.appendChild(slot);
         });
 
-        reiniciarJogo(numerosCorretos.length, true);
+        reiniciarJogo(treino.numerosCorretos.length, true);
       }
 
       function destacarSetor(setor) {
@@ -474,42 +557,30 @@
         if (setor === "reset") {
           numeros.forEach((btn) => {
             btn.classList.remove("verde-brasil", "amarelo-brasil", "azul-brasil");
-            if (vermelhos.includes(parseInt(btn.textContent))) {
+            if (treino.vermelhos.includes(parseInt(btn.textContent))) {
               btn.classList.add("vermelho");
-            } else if (pretos.includes(parseInt(btn.textContent))) {
+            } else if (treino.pretos.includes(parseInt(btn.textContent))) {
               btn.classList.add("preto");
             } else if (parseInt(btn.textContent) === 0) {
               btn.classList.add("verde");
             }
           });
-          const botaoReset = document.getElementById("btnReset");
-          if (botaoReset) {
-            botaoReset.classList.add("selecionado");
-          }
+          document.getElementById("btnReset")?.classList.add("selecionado");
           return;
         }
 
-        const botaoClicado = document.getElementById(`btn${setor}`);
-        if (botaoClicado) {
-          botaoClicado.classList.add("selecionado");
-        }
-
+        document.getElementById(`btn${setor}`)?.classList.add("selecionado");
         numeros.forEach((btn) => {
           btn.classList.remove("verde-brasil", "amarelo-brasil", "azul-brasil");
-          if (vermelhos.includes(parseInt(btn.textContent))) {
-            btn.classList.add("vermelho");
-          } else if (pretos.includes(parseInt(btn.textContent))) {
-            btn.classList.add("preto");
-          } else if (parseInt(btn.textContent) === 0) {
-            btn.classList.add("verde");
-          }
+          if (treino.vermelhos.includes(parseInt(btn.textContent))) btn.classList.add("vermelho");
+          else if (treino.pretos.includes(parseInt(btn.textContent))) btn.classList.add("preto");
+          else if (parseInt(btn.textContent) === 0) btn.classList.add("verde");
         });
 
-        const cor = coresBrasil[setor];
-
+        const cor = treino.coresBrasil[setor];
         numeros.forEach((btn) => {
           const num = parseInt(btn.textContent);
-          if (setores[setor].includes(num)) {
+          if (treino.setores[setor].includes(num)) {
             btn.classList.add(cor);
           }
         });
@@ -518,7 +589,7 @@
       function reiniciarJogo(totalNecessario, habilitarCliques) {
         document.getElementById("resultado").textContent = "";
         gerarGrid(habilitarCliques);
-        if (modoAtual === "setores") {
+        if (treino.modoAtual === "setores") {
           document.getElementById("contador").textContent = `Selecionados: 0/${totalNecessario}`;
         }
       }
@@ -526,65 +597,45 @@
       function gerarGrid(habilitarCliques) {
         const container = document.getElementById("numeros-grid");
         container.innerHTML = "";
-
-        const vazioEsq = document.createElement("div");
         const zero = document.createElement("div");
-        const vazioDir = document.createElement("div");
-
         zero.textContent = "0";
         zero.className = "numero verde zero";
         if (habilitarCliques) {
           zero.onclick = () => validarSelecao(zero, 0);
           zero.style.cursor = "pointer";
-        } else {
-          zero.onclick = null;
-          zero.style.cursor = "default";
         }
-        container.appendChild(vazioEsq);
-        container.appendChild(zero);
-        container.appendChild(vazioDir);
+        container.append(document.createElement("div"), zero, document.createElement("div"));
 
         for (let i = 1; i <= 36; i++) {
           const btn = document.createElement("div");
           btn.classList.add("numero");
-
-          if (vermelhos.includes(i)) btn.classList.add("vermelho");
-          else if (pretos.includes(i)) btn.classList.add("preto");
-
+          if (treino.vermelhos.includes(i)) btn.classList.add("vermelho");
+          else if (treino.pretos.includes(i)) btn.classList.add("preto");
           btn.textContent = i;
           if (habilitarCliques) {
             btn.onclick = () => validarSelecao(btn, i);
             btn.style.cursor = "pointer";
-          } else {
-            btn.onclick = null;
-            btn.style.cursor = "default";
           }
           container.appendChild(btn);
         }
       }
 
       function validarSelecao(btn, num) {
-        if (btn.classList.contains("selecionado") || btn.classList.contains("usado")) {
-          return;
-        }
+        if (btn.classList.contains("selecionado") || btn.classList.contains("usado")) return;
 
-        if (modoAtual === "vizinhos") {
-          const indexDoVizinho = numerosCorretos.indexOf(num);
-
+        if (treino.modoAtual === "vizinhos") {
+          const indexDoVizinho = treino.numerosCorretos.indexOf(num);
           if (indexDoVizinho !== -1) {
             btn.classList.add("correto", "usado");
-            numerosCorretos.splice(indexDoVizinho, 1);
-
+            treino.numerosCorretos.splice(indexDoVizinho, 1);
             const slotCorreto = document.querySelector(`.vizinho-slot[data-numero="${num}"]`);
-
             if (slotCorreto) {
               slotCorreto.textContent = num;
               slotCorreto.classList.add("cheio");
-              const corDoNumero = vermelhos.includes(num) ? "#c00000" : pretos.includes(num) ? "#000000" : "#007f00";
+              const corDoNumero = treino.vermelhos.includes(num) ? "#c00000" : treino.pretos.includes(num) ? "#000000" : "#007f00";
               slotCorreto.style.backgroundColor = corDoNumero;
             }
-
-            if (numerosCorretos.length === 0) {
+            if (treino.numerosCorretos.length === 0) {
               mostrarPopup("ACERTOU", "acertou");
               setTimeout(() => {
                 const nivelAtual = document.getElementById("numeros-grid").dataset.currentLevel;
@@ -599,35 +650,215 @@
               iniciarVizinhosPorNivel(nivelAtual);
             }, 1500);
           }
-        } else if (modoAtual === "setores") {
+        } else if (treino.modoAtual === "setores") {
           btn.classList.add("selecionado");
-
-          if (!numerosCorretos.includes(num)) {
+          if (!treino.numerosCorretos.includes(num)) {
             btn.classList.add("errado");
             mostrarPopup("ERROU", "errou");
-            setTimeout(() => {
-              iniciarModoSetores();
-            }, 1500);
+            setTimeout(iniciarModoSetores, 1500);
             return;
           }
-
           btn.classList.add("correto");
           const totalClicados = document.querySelectorAll(".numero.selecionado").length;
           const totalCorretos = document.getElementById("contador").textContent.split("/")[1];
-
           document.getElementById("contador").textContent = `Selecionados: ${totalClicados}/${totalCorretos}`;
-
           if (totalClicados >= parseInt(totalCorretos)) {
             mostrarPopup("ACERTOU", "acertou");
-            setTimeout(() => {
-              iniciarModoSetores();
-            }, 2500);
+            setTimeout(iniciarModoSetores, 2500);
           }
         }
       }
 
+      // --- LÓGICA DO QUIZ (ISOLADA) ---
+      const quiz = {
+        roleta: [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26],
+        setores: {
+          Voisins: [22, 18, 29, 7, 28, 12, 35, 3, 26, 0, 32, 15, 19, 4, 21, 2, 25],
+          Orphelins: [1, 20, 14, 31, 9, 17, 34, 6],
+          Tier: [27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33],
+        },
+        nivel: 1,
+        neighborCount: 1,
+        perguntas: [],
+        current: 0,
+        tentativas: 1,
+        acertos: 0,
+        iniciado: false,
+
+        embaralhar: (array) => array.sort(() => Math.random() - 0.5),
+
+        getSetor: function (num) {
+          for (let key in this.setores) {
+            if (this.setores[key].includes(num)) return key;
+          }
+          return "Desconhecido";
+        },
+
+        getVizinhos: function (num, n) {
+          const idx = this.roleta.indexOf(num);
+          const viz = [];
+          for (let i = -n; i <= n; i++) {
+            if (i !== 0) {
+              const pos = (idx + i + this.roleta.length) % this.roleta.length;
+              viz.push(this.roleta[pos]);
+            }
+          }
+          return viz;
+        },
+
+        setNeighbors: function (n) {
+          this.neighborCount = n;
+          this.iniciarNivel(1);
+        },
+
+        iniciarNivel: function (n) {
+          this.nivel = n;
+          this.current = 0;
+          this.acertos = 0;
+          document.getElementById("feedback").textContent = "";
+          document.getElementById("vizinhos-input").value = "";
+          document.getElementById("input-area").style.display = "none";
+
+          const novos = this.roleta.map((num) => ({
+            num,
+            sector: this.getSetor(num),
+            vizinhos: this.getVizinhos(num, this.neighborCount),
+          }));
+
+          this.perguntas = this.embaralhar(novos);
+          this.atualizarStatus();
+          this.showQuestion();
+        },
+
+        atualizarStatus: function () {
+          const status = document.getElementById("status");
+          status.textContent = `Nível ${this.nivel} | Tentativa ${this.tentativas} | Progresso: ${this.acertos}/37`;
+        },
+
+        showQuestion: function () {
+          const q = this.perguntas[this.current];
+          const question = document.getElementById("question");
+          const options = document.getElementById("options");
+          const inputArea = document.getElementById("input-area");
+          const feedback = document.getElementById("feedback");
+
+          feedback.textContent = "";
+          inputArea.style.display = "none";
+          document.getElementById("vizinhos-input").value = "";
+
+          if (this.nivel === 1) {
+            question.textContent = `Número ${q.num} pertence a qual setor?`;
+            options.innerHTML = "";
+            ["Voisins", "Tier", "Orphelins"].forEach((opt) => {
+              const btn = document.createElement("button");
+              btn.textContent = opt;
+              btn.onclick = () => this.checkSectorAnswer(opt);
+              options.appendChild(btn);
+            });
+          } else {
+            question.textContent = `Digite os vizinhos do número ${q.num}`;
+            options.innerHTML = "";
+            inputArea.style.display = "block";
+          }
+        },
+
+        checkSectorAnswer: function (answer) {
+          const q = this.perguntas[this.current];
+          const feedback = document.getElementById("feedback");
+          if (answer === q.sector) {
+            this.acertos++;
+            feedback.innerHTML = `<span class='correct'>Correto!</span>`;
+            this.proximaPergunta();
+          } else {
+            feedback.innerHTML = `<span class='wrong'>Errado! Era ${q.sector}. Reiniciando nível...</span>`;
+            this.tentativas++;
+            setTimeout(() => this.iniciarNivel(1), 2000);
+          }
+        },
+
+        checkTypedVizinhos: function () {
+          const q = this.perguntas[this.current];
+          const input = document.getElementById("vizinhos-input").value;
+          const resposta = input
+            .split(",")
+            .map((n) => parseInt(n.trim()))
+            .filter((n) => !isNaN(n));
+          const corretos = q.vizinhos.slice().sort((a, b) => a - b);
+          const user = resposta.slice().sort((a, b) => a - b);
+          const feedback = document.getElementById("feedback");
+
+          const iguais = JSON.stringify(user) === JSON.stringify(corretos);
+          if (iguais) {
+            this.acertos++;
+            feedback.innerHTML = `<span class='correct'>Correto!</span>`;
+            this.proximaPergunta();
+          } else {
+            feedback.innerHTML = `<span class='wrong'>Errado! Corretos: ${corretos.join(", ")}. Reiniciando nível...</span>`;
+            this.tentativas++;
+            setTimeout(() => this.iniciarNivel(2), 3000);
+          }
+        },
+
+        proximaPergunta: function () {
+          this.current++;
+          this.atualizarStatus();
+          if (this.acertos >= 37) {
+            if (this.nivel === 1) {
+              document.getElementById("feedback").innerHTML = `<span class='correct'>Parabéns! Você completou o Nível 1! Vamos para o Nível 2.</span>`;
+              setTimeout(() => this.iniciarNivel(2), 3000);
+            } else {
+              document.getElementById("feedback").innerHTML = `<span class='correct'>Você concluiu o Nível 2! 👏 Em breve desbloquearemos o próximo nível visual!</span>`;
+            }
+          } else {
+            this.showQuestion();
+          }
+        },
+
+        // Função principal para iniciar o quiz e configurar os botões
+        init: function () {
+          if (this.iniciado) return; // Não reinicia se já foi iniciado
+
+          document.querySelectorAll(".btn-vizinho-quiz").forEach((button) => {
+            button.addEventListener("click", (e) => {
+              this.setNeighbors(parseInt(e.target.dataset.n));
+            });
+          });
+          document.getElementById("btn-verificar-vizinhos").addEventListener("click", () => this.checkTypedVizinhos());
+          document.getElementById("btn-proxima").addEventListener("click", () => this.proximaPergunta());
+
+          this.iniciarNivel(1);
+          this.iniciado = true;
+        },
+      };
+
+      // --- LÓGICA DE CONTROLE GERAL E NAVEGAÇÃO ---
+      function mudarModo(modo) {
+        // Esconde todos os containers de modo
+        document.getElementById("modo-treino").style.display = "none";
+        document.getElementById("modo-quiz").style.display = "none";
+
+        // Remove a classe 'ativo' de todos os botões de modo
+        document.querySelectorAll("#botoes-modo button").forEach((btn) => btn.classList.remove("ativo"));
+
+        // Mostra o modo selecionado e ativa o botão correspondente
+        if (modo === "setores") {
+          document.getElementById("modo-treino").style.display = "block";
+          document.getElementById("btnSetores").classList.add("ativo");
+          iniciarModoSetores();
+        } else if (modo === "vizinhos") {
+          document.getElementById("modo-treino").style.display = "block";
+          document.getElementById("btnVizinhos").classList.add("ativo");
+          iniciarModoVizinhos();
+        } else if (modo === "quiz") {
+          document.getElementById("modo-quiz").style.display = "block";
+          document.getElementById("btnQuiz").classList.add("ativo");
+          quiz.init(); // Inicia o quiz (só na primeira vez)
+        }
+      }
+
+      // Inicia a aplicação no modo "Setores" quando a página carregar
       document.addEventListener("DOMContentLoaded", () => {
-        iniciarModoSetores();
+        mudarModo("setores");
       });
     </script>
   </body>
