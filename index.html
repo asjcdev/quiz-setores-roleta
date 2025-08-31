@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Treinador de Roleta</title>
+  </head>
+
+  <body>
+    <div id="controles-principais">
+      <div id="botoes-modo">
+        <button id="btnSetores" onclick="mudarModo('setores')">Setores</button>
+        <button id="btnVizinhos" onclick="mudarModo('vizinhos')">Vizinhos</button>
+        <button id="btnQuiz" onclick="mudarModo('quiz')">Quiz</button>
+        <button id="btnRacetrack" onclick="mudarModo('racetrack')">Racetrack</button>
+      </div>
+    </div>
+
+    <div id="modo-treino" style="display: none">
+      <h2 id="pergunta">Selecione uma modalidade</h2>
+      <div id="painel-setores" style="display: none">
+        <p id="contador">Selecionados: 0/0</p>
+        <div id="botoes-filtro-setores">
+          <button id="btnVoisins" class="botao-setor-filtro" onclick="destacarSetor('Voisins')">Voisins</button>
+          <button id="btnOrphelins" class="botao-setor-filtro" onclick="destacarSetor('Orphelins')">Orphelins</button>
+          <button id="btnTier" class="botao-setor-filtro" onclick="destacarSetor('Tier')">Tier</button>
+          <button id="btnReset" class="botao-setor-filtro" onclick="destacarSetor('reset')">Reset</button>
+        </div>
+      </div>
+      <div id="botoes-niveis" style="display: none">
+        <button onclick="iniciarVizinhosPorNivel(1)">Nível 1</button>
+        <button onclick="iniciarVizinhosPorNivel(2)">Nível 2</button>
+        <button onclick="iniciarVizinhosPorNivel(3)">Nível 3</button>
+        <button onclick="iniciarVizinhosPorNivel(4)">Nível 4</button>
+      </div>
+      <div id="vizinhos-display-container" style="display: none"></div>
+      <div class="grid" id="numeros-grid"></div>
+      <p id="resultado"></p>
+    </div>
+
+    <div id="modo-quiz" style="display: none">
+      <div class="card">
+        <div class="toggle-group" id="config">
+          <strong>Escolha a quantidade de vizinhos:</strong><br />
+          <button class="btn-vizinho-quiz" data-n="1">1</button>
+          <button class="btn-vizinho-quiz" data-n="2">2</button>
+          <button class="btn-vizinho-quiz" data-n="3">3</button>
+        </div>
+        <h2 id="status"></h2>
+        <h3 id="question"></h3>
+        <div id="options"></div>
+        <div id="input-area" style="display: none">
+          <p>Digite os vizinhos (ex: 0, 15):</p>
+          <input type="text" id="vizinhos-input" placeholder="Ex: 0, 15" />
+          <br />
+          <button id="btn-verificar-vizinhos">Verificar</button>
+        </div>
+        <p id="feedback"></p>
+        <button id="btn-proxima">Próxima</button>
+      </div>
+    </div>
+
+    <div id="modo-racetrack" style="display: none">
+      <div class="racetrack-container">
+        <div class="main-square-container">
+          <div class="app-container">
+            <div class="controls-column left-controls">
+              <div class="neighbor-controls">
+                <div class="control-button" id="add-neighbor">+</div>
+                <span id="neighbor-count">1</span>
+                <div class="control-button" id="remove-neighbor">-</div>
+              </div>
+            </div>
+            <div class="timer-hud" aria-live="polite">
+              <svg class="timer-dial" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Contagem regressiva">
+                <circle cx="32" cy="32" r="30" class="timer-ring"></circle>
+                <line x1="32" y1="32" x2="32" y2="6" id="clock-hand" class="timer-hand"></line>
+                <text id="timer-text" class="timer-text" x="32" y="38" text-anchor="middle">15</text>
+              </svg>
+            </div>
+            <div class="center-column">
+              <div id="racetrack-container">
+                <svg id="racetrack-svg"></svg>
+              </div>
+            </div>
+            <div class="controls-column right-controls">
+              <div class="action-button-wrapper">
+                <div class="control-button" id="play-button" aria-label="Girar">▶</div>
+                <span class="action-label">GIRAR</span>
+              </div>
+              <div class="action-button-wrapper">
+                <span class="action-label">DESFAZER</span>
+                <div class="control-button" id="undo-button">
+                  <span id="undo-arrow">↩</span>
+                </div>
+              </div>
+              <div id="chip-trigger" class="chip-trigger" aria-haspopup="true" aria-expanded="false" title="Escolher ficha">
+                <div class="chip-static" data-denom="1" aria-label="Ficha 1">
+                  <svg class="chip-svg" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                    <circle cx="15" cy="15" r="15" fill="currentColor" stroke="#fff" stroke-width="2" style="filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5))" />
+                    <circle cx="15" cy="15" r="13" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-dasharray="1.1 7" opacity="0.9" />
+                    <text x="15" y="15.6" fill="#fff" text-anchor="middle" dominant-baseline="middle">1</text>
+                  </svg>
+                </div>
+                <div class="chip-static" data-denom="5" aria-label="Ficha 5">
+                  <svg class="chip-svg" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                    <circle cx="15" cy="15" r="15" fill="currentColor" stroke="#fff" stroke-width="2" style="filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5))" />
+                    <circle cx="15" cy="15" r="13" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-dasharray="1.1 7" opacity="0.9" />
+                    <text x="15" y="15.6" fill="#fff" text-anchor="middle" dominant-baseline="middle">5</text>
+                  </svg>
+                </div>
+                <div class="chip-static" data-denom="10" aria-label="Ficha 10">
+                  <svg class="chip-svg" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                    <circle cx="15" cy="15" r="15" fill="currentColor" stroke="#fff" stroke-width="2" style="filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5))" />
+                    <circle cx="15" cy="15" r="13" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-dasharray="1.1 7" opacity="0.9" />
+                    <text x="15" y="15.6" fill="#fff" text-anchor="middle" dominant-baseline="middle">10</text>
+                  </svg>
+                </div>
+              </div>
+              <div class="action-button-wrapper">
+                <div class="control-button" id="double-button">x2</div>
+                <span class="action-label">DOBRAR</span>
+              </div>
+              <div id="chip-fan" class="chip-fan" hidden></div>
+              <div id="chip-fan-backdrop" hidden></div>
+            </div>
+          </div>
+          <div class="balance-corner-display">
+            <div class="balance-info">Aposta total <span id="total-bet">R$ 0</span></div>
+            <div class="balance-info">Saldo <span id="balance">R$ 100</span></div>
+          </div>
+          <div class="balance-selector">
+            <button data-balance="100">100</button>
+            <button data-balance="1000">1.000</button>
+            <button data-balance="10000">10.000</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="popup-overlay" style="display: none">
+      <div id="popup-content"></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
