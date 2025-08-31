@@ -405,90 +405,102 @@ body.spinning .bet-group:hover .bet-cell { fill: initial; cursor: not-allowed; }
 
 /*
 ==================================================================
-   INÍCIO DA SOLUÇÃO: CÓDIGO RESPONSIVO PARA CELULARES
+   INÍCIO DA SOLUÇÃO: LAYOUT GRID PARA CELULARES
 ==================================================================
-   Substitua sua media query antiga por esta.
-   Este bloco inteiro reorganiza o layout do modo "Racetrack"
-   para funcionar em telas pequenas.
+   Este novo bloco de media query organiza o layout do Racetrack
+   em um grid de 3 colunas para dar controle total da posição.
 */
-@media (max-width: 800px) { /* Aumentei o breakpoint para pegar tablets na vertical também */
-  
+@media (max-width: 850px) {
   body {
-    overflow-y: auto; /* Permite rolar a tela no celular se o conteúdo for muito grande */
+    overflow-y: auto; /* Permite rolar se necessário */
   }
 
   /* --- Ajustes Gerais --- */
   #botoes-modo {
-    flex-wrap: wrap; /* Permite que os botões quebrem a linha se não couberem */
+    flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
   #botoes-modo button {
     padding: 10px 15px;
     font-size: 14px;
   }
-
-  /* --- Layout Principal do Racetrack --- */
+  
+  /* --- Estrutura Principal --- */
   .main-square-container {
-    width: 95vw; /* Ocupa 95% da LARGURA da tela, não da altura */
-    height: auto;
-    margin-top: 10px;
-    padding: 15px;
-  }
-
-  .app-container {
-    flex-direction: column; /* ESSA É A MUDANÇA PRINCIPAL: empilha os elementos */
-    gap: 15px;
-    position: relative; /* Necessário para posicionar o timer */
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    margin-top: 0;
+    padding: 10px;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
   }
   
-  /* --- Timer --- */
-  .timer-hud {
-    position: static; /* Remove o posicionamento absoluto */
-    order: -1; /* Joga o timer para o topo dos itens empilhados */
-    margin-bottom: 5px;
-  }
-
-  /* --- Colunas de Controle (Esquerda e Direita) --- */
-  .left-controls, .right-controls {
-    position: static; /* ESSENCIAL: Remove o 'left' e 'right' que quebravam o layout */
+  .app-container {
+    display: grid;
+    grid-template-columns: 65px 1fr 65px; /* Coluna Esquerda | Centro (flexível) | Coluna Direita */
+    grid-template-rows: auto 1fr auto auto;    /* Timer | Roleta | Infos Saldo | Seletor Saldo */
+    grid-template-areas:
+      "header   header      header"
+      "left-col center-col  right-col"
+      "footer1  footer1     footer1"
+      "footer2  footer2     footer2";
     width: 100%;
-    height: auto;
-    flex-direction: row; /* Deixa os botões lado a lado DENTRO da barra de controle */
-    justify-content: space-evenly; /* Espaça os botões igualmente */
-    align-items: center;
+    height: 100%;
     gap: 10px;
   }
 
+  /* --- Posicionando os elementos no Grid --- */
+  .timer-hud {
+    grid-area: header;
+    position: static;
+    justify-self: center; /* Centraliza o timer no topo */
+  }
+
+  .left-controls {
+    grid-area: left-col;
+    position: static;
+    justify-content: center;
+    height: 100%;
+  }
+
   .center-column {
+    grid-area: center-col;
     width: 100%;
-    order: 0; /* Garante que a roleta fique no meio */
+    height: 100%;
   }
 
   #racetrack-container {
-    width: 100%; /* Racetrack ocupa toda a largura disponível */
-  }
-
-  /* --- Informações de Saldo e Aposta --- */
-  .balance-corner-display, .balance-selector {
-    position: static; /* Remove o posicionamento absoluto */
     width: 100%;
-    margin-top: 10px;
-    display: flex;
+  }
+  
+  .right-controls {
+    grid-area: right-col;
+    position: static;
     justify-content: center;
-    align-items: center;
-    text-align: center;
+    gap: 15px;
+    height: 100%;
   }
   
   .balance-corner-display {
-    flex-direction: column; /* Empilha "Aposta Total" e "Saldo" */
-    gap: 5px;
+    grid-area: footer1;
+    position: static;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    min-width: 0;
+  }
+  
+  .balance-info {
+    text-align: center;
   }
   
   .balance-selector {
-    order: 2; /* Joga os botões de 100/1000/10000 para baixo de tudo */
+    grid-area: footer2;
+    position: static;
+    width: 100%;
+    justify-content: center;
   }
 }
-/* ==================================================================
-   FIM DA SOLUÇÃO
-================================================================== */
