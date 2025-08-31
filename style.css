@@ -1,72 +1,72 @@
 /* Estilos gerais */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+ box-sizing: border-box;
+ margin: 0;
+ padding: 0;
 }
 
 /* Corpo principal da página com layout corrigido */
 body {
-  background-color: #1e1e1e;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  height: 100vh;
-  padding: 0px;
-  overflow: hidden; /* Mantém sem barra de rolagem */
+ background-color: #1e1e1e;
+ color: white;
+ font-family: Arial, sans-serif;
+ text-align: center;
+ height: 100vh;
+ padding: 0px;
+ overflow: hidden; /* Mantém sem barra de rolagem */
 
-  /* Correção de layout: Organiza os blocos principais (botões e conteúdo) em uma coluna vertical */
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centraliza os blocos na horizontal */
+ /* Correção de layout: Organiza os blocos principais (botões e conteúdo) em uma coluna vertical */
+ display: flex;
+ flex-direction: column;
+ align-items: center; /* Centraliza os blocos na horizontal */
 }
 
 /* --- ESTILOS DO JOGO PRINCIPAL (TREINO) --- */
 #modo-treino h2 {
-  color: #00ffff;
-  margin-bottom: 0px;
-  font-size: 22px;
-  margin-top: 0px;
+ color: #00ffff;
+ margin-bottom: 0px;
+ font-size: 22px;
+ margin-top: 0px;
 }
 
 #contador-container {
-  text-align: center;
+ text-align: center;
 }
 
 #contador {
-  margin-bottom: 2px;
-  color: #00ffff;
+ margin-bottom: 2px;
+ color: #00ffff;
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(3, 125px);
-  gap: 0px;
-  justify-content: center;
-  margin-top: 10px;
+ display: grid;
+ grid-template-columns: repeat(3, 125px);
+ gap: 0px;
+ justify-content: center;
+ margin-top: 10px;
 }
 
 .numero {
-  position: relative;
-  width: 125px;
-  height: 35px;
-  padding: 10px 0;
-  font-size: 20px;
-  font-weight: bold;
-  border: 2px solid #444;
-  border-radius: 2px;
-  cursor: pointer;
-  color: white;
-  background-color: #2c2c2c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease-in-out;
+ position: relative;
+ width: 125px;
+ height: 35px;
+ padding: 10px 0;
+ font-size: 20px;
+ font-weight: bold;
+ border: 2px solid #444;
+ border-radius: 2px;
+ cursor: pointer;
+ color: white;
+ background-color: #2c2c2c;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ transition: all 0.2s ease-in-out;
 }
 
 .numero:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+ transform: scale(1.05);
+ box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 .vermelho { background-color: #c00000 !important; }
@@ -78,220 +78,220 @@ body {
 .branco-brasil { background-color: #ffffff !important; color: #000 !important; }
 
 .numero.selecionado {
-  border: 2px solid gold;
+ border: 2px solid gold;
 }
 
 .numero.errado::after {
-  content: "X";
-  position: absolute;
-  font-size: 40px;
-  font-weight: bold;
-  color: white;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+ content: "X";
+ position: absolute;
+ font-size: 40px;
+ font-weight: bold;
+ color: white;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ pointer-events: none;
 }
 
 .numero.correto::after {
-  content: "✔";
-  position: absolute;
-  font-size: 40px;
-  font-weight: bold;
-  color: #00ff88;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+ content: "✔";
+ position: absolute;
+ font-size: 40px;
+ font-weight: bold;
+ color: #00ff88;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ pointer-events: none;
 }
 
 .zero {
-  grid-column: 2 / span 1;
+ grid-column: 2 / span 1;
 }
 
 #botoes-modo button {
-  padding: 12px 30px;
-  font-size: 18px;
-  background-color: #00ffff;
-  color: #000;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: all 0.3s ease-in-out;
+ padding: 12px 30px;
+ font-size: 18px;
+ background-color: #00ffff;
+ color: #000;
+ border: none;
+ border-radius: 5px;
+ cursor: pointer;
+ opacity: 0.7;
+ transition: all 0.3s ease-in-out;
 }
 
 #botoes-modo button.ativo,
 #botoes-modo button:hover {
-  opacity: 1;
+ opacity: 1;
 }
 
 #botoes-modo button.ativo {
-  box-shadow: 0 0 10px #00ffffaa;
-  transform: scale(1.05);
+ box-shadow: 0 0 10px #00ffffaa;
+ transform: scale(1.05);
 }
 
 #resultado {
-  margin-top: 10px;
-  font-weight: bold;
-  min-height: 40px;
+ margin-top: 10px;
+ font-weight: bold;
+ min-height: 40px;
 }
 
 #controles-principais {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  margin-top: 0;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 0;
+ margin-top: 0;
 }
 
 #botoes-modo {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
-  margin-bottom: 20px;
+ display: flex;
+ justify-content: center;
+ gap: 10px;
+ margin-top: 10px;
+ margin-bottom: 20px;
 }
 
 .botao-setor-filtro {
-  padding: 6px 10px;
-  font-size: 14px;
-  background-color: #00ffff;
-  color: #000;
-  border: 1px solid #666;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
+ padding: 6px 10px;
+ font-size: 14px;
+ background-color: #00ffff;
+ color: #000;
+ border: 1px solid #666;
+ border-radius: 4px;
+ cursor: pointer;
+ transition: all 0.3s ease-in-out;
 }
 
 .botao-setor-filtro:hover {
-  background-color: #00c7c7;
-  transform: scale(1.05);
+ background-color: #00c7c7;
+ transform: scale(1.05);
 }
 
 #painel-setores {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  margin-top: 10px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ gap: 2px;
+ margin-top: 10px;
 }
 
 #botoes-filtro-setores {
-  display: flex;
-  gap: 5px;
-  margin-top: 2px;
+ display: flex;
+ gap: 5px;
+ margin-top: 2px;
 }
 
 #popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background-color: rgba(0, 0, 0, 0.7);
+ display: none;
+ justify-content: center;
+ align-items: center;
+ z-index: 1000;
 }
 
 #popup-content {
-  padding: 20px 40px;
-  font-size: 30px;
-  font-weight: bold;
-  color: #fff;
-  border-radius: 10px;
-  animation: fadeIn 0.5s;
+ padding: 20px 40px;
+ font-size: 30px;
+ font-weight: bold;
+ color: #fff;
+ border-radius: 10px;
+ animation: fadeIn 0.5s;
 }
 
 #popup-content.acertou { background-color: #00ff88; color: #000; }
 #popup-content.errou { background-color: #c00000; }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+ from { opacity: 0; }
+ to { opacity: 1; }
 }
 
 #vizinhos-display-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 15px;
-  gap: 10px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ font-size: 20px;
+ font-weight: bold;
+ margin-top: 15px;
+ gap: 10px;
 }
 
 #botoes-niveis {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 15px;
-  margin-bottom: 8px;
+ display: flex;
+ justify-content: center;
+ gap: 8px;
+ margin-top: 15px;
+ margin-bottom: 8px;
 }
 
 #botoes-niveis button {
-  padding: 8px 14px;
-  font-size: 14px;
-  background-color: #333;
-  color: white;
-  border: 1px solid #666;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+ padding: 8px 14px;
+ font-size: 14px;
+ background-color: #333;
+ color: white;
+ border: 1px solid #666;
+ border-radius: 4px;
+ cursor: pointer;
+ transition: background-color 0.2s ease;
 }
 
 #botoes-niveis button:hover {
-  background-color: #555;
+ background-color: #555;
 }
 
 .vizinho-slot {
-  min-width: 30px;
-  min-height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed #666;
-  border-radius: 4px;
-  font-size: 16px;
-  padding: 4px;
+ min-width: 30px;
+ min-height: 30px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ border: 1px dashed #666;
+ border-radius: 4px;
+ font-size: 16px;
+ padding: 4px;
 }
 
 .vizinho-slot.cheio {
-  border: none;
-  padding: 4px;
+ border: none;
+ padding: 4px;
 }
 
 /* --- ESTILOS DO PROJETO QUIZ (ISOLADOS) --- */
 #modo-quiz .card {
-  background-color: #2a2a2a;
-  padding: 25px 25px;
-  margin: auto;
-  max-width: 370px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+ background-color: #2a2a2a;
+ padding: 25px 25px;
+ margin: auto;
+ max-width: 370px;
+ border-radius: 10px;
+ box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
 }
 
 #modo-quiz button {
-  margin: 10px 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background: linear-gradient(to bottom, #4f4f4f, #2e2e2e);
-  color: white;
-  box-shadow: inset 0 0 2px #ffffff44, 0 0 5px #00000066;
-  transition: all 0.2s ease-in-out;
-  opacity: 1;
+ margin: 10px 5px;
+ padding: 10px 20px;
+ font-size: 16px;
+ font-weight: bold;
+ border: none;
+ border-radius: 6px;
+ cursor: pointer;
+ background: linear-gradient(to bottom, #4f4f4f, #2e2e2e);
+ color: white;
+ box-shadow: inset 0 0 2px #ffffff44, 0 0 5px #00000066;
+ transition: all 0.2s ease-in-out;
+ opacity: 1;
 }
 
 #modo-quiz button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px #09a71455;
+ transform: scale(1.05);
+ box-shadow: 0 0 10px #09a71455;
 }
 
 #modo-quiz .toggle-group { margin-bottom: 50px; }
@@ -304,11 +304,11 @@ body {
 /*---- TODO O CONTEUDO RACETRACE ABAIXO ----*/
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap");
 :root {
-  --bg-dark: #0d0d0d; --bg-container-square: #1a1a1a;
-  --track-bg: #1d1120; --track-border: #a89155;
-  --number-red: #c00000; --number-black: #222; --number-green: #07522f;
-  --text-light: #f3f1f1; --text-gold: #e6c56c;
-  --chip-size: 30px; --chip-font-size: 14px;
+ --bg-dark: #0d0d0d; --bg-container-square: #1a1a1a;
+ --track-bg: #1d1120; --track-border: #a89155;
+ --number-red: #c00000; --number-black: #222; --number-green: #07522f;
+ --text-light: #f3f1f1; --text-gold: #e6c56c;
+ --chip-size: 30px; --chip-font-size: 14px;
 }
 
 .main-square-container { width: 85vh; max-width: 850px; height: 90vh; max-height: 850px; background: var(--bg-container-square); border-radius: 20px; box-shadow: 0 0 30px rgba(0, 0, 0, .5); display: flex; justify-content: center; align-items: center; padding: 10px; box-sizing: border-box; position: relative; }
@@ -372,62 +372,123 @@ body.spinning .bet-group:hover .bet-cell { fill: initial; cursor: not-allowed; }
 
 /* --- CORREÇÕES FINAIS PARA O RACETRACK --- */
 #modo-racetrack {
-  flex-grow: 1;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+ flex-grow: 1;
+ width: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
 }
 .racetrack-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 100%;
+ height: 100%;
 }
 
 /* --- AJUSTES FINOS DE LAYOUT (SUA VERSÃO) --- */
 .main-square-container {
-  margin-top: -22px;
+ margin-top: -22px;
 }
 .balance-corner-display {
-  min-width: 160px;
-  bottom: 15px;
+ min-width: 160px;
+ bottom: 15px;
 }
 .balance-info {
-  text-align: left;
+ text-align: left;
 }
 .balance-selector {
-  gap: 3px;
-  bottom: 21px;
+ gap: 3px;
+ bottom: 21px;
 }
 
-/* --- ESTILOS PARA TELAS PEQUENAS (CELULARES) --- */
-@media (max-width: 600px) {
+
+/*
+==================================================================
+   INÍCIO DA SOLUÇÃO: CÓDIGO RESPONSIVO PARA CELULARES
+==================================================================
+   Substitua sua media query antiga por esta.
+   Este bloco inteiro reorganiza o layout do modo "Racetrack"
+   para funcionar em telas pequenas.
+*/
+@media (max-width: 800px) { /* Aumentei o breakpoint para pegar tablets na vertical também */
+  
+  body {
+    overflow-y: auto; /* Permite rolar a tela no celular se o conteúdo for muito grande */
+  }
+
+  /* --- Ajustes Gerais --- */
+  #botoes-modo {
+    flex-wrap: wrap; /* Permite que os botões quebrem a linha se não couberem */
+    gap: 8px;
+    margin-bottom: 10px;
+  }
   #botoes-modo button {
-    padding: 8px 10px;
+    padding: 10px 15px;
     font-size: 14px;
   }
-  #botoes-modo {
+
+  /* --- Layout Principal do Racetrack --- */
+  .main-square-container {
+    width: 95vw; /* Ocupa 95% da LARGURA da tela, não da altura */
+    height: auto;
+    margin-top: 10px;
+    padding: 15px;
+  }
+
+  .app-container {
+    flex-direction: column; /* ESSA É A MUDANÇA PRINCIPAL: empilha os elementos */
+    gap: 15px;
+    position: relative; /* Necessário para posicionar o timer */
+  }
+  
+  /* --- Timer --- */
+  .timer-hud {
+    position: static; /* Remove o posicionamento absoluto */
+    order: -1; /* Joga o timer para o topo dos itens empilhados */
+    margin-bottom: 5px;
+  }
+
+  /* --- Colunas de Controle (Esquerda e Direita) --- */
+  .left-controls, .right-controls {
+    position: static; /* ESSENCIAL: Remove o 'left' e 'right' que quebravam o layout */
+    width: 100%;
+    height: auto;
+    flex-direction: row; /* Deixa os botões lado a lado DENTRO da barra de controle */
+    justify-content: space-evenly; /* Espaça os botões igualmente */
+    align-items: center;
+    gap: 10px;
+  }
+
+  .center-column {
+    width: 100%;
+    order: 0; /* Garante que a roleta fique no meio */
+  }
+
+  #racetrack-container {
+    width: 100%; /* Racetrack ocupa toda a largura disponível */
+  }
+
+  /* --- Informações de Saldo e Aposta --- */
+  .balance-corner-display, .balance-selector {
+    position: static; /* Remove o posicionamento absoluto */
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .balance-corner-display {
+    flex-direction: column; /* Empilha "Aposta Total" e "Saldo" */
     gap: 5px;
   }
-  .main-square-container {
-    width: 95vw;
-    height: auto;
-    max-height: 85vh;
-    margin-top: 0;
-  }
-  .app-container {
-    flex-direction: column;
-    gap: 10px;
-    justify-content: center;
-  }
-  .left-controls, .right-controls {
-    position: static;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-around;
-    height: auto;
+  
+  .balance-selector {
+    order: 2; /* Joga os botões de 100/1000/10000 para baixo de tudo */
   }
 }
-
+/* ==================================================================
+   FIM DA SOLUÇÃO
+================================================================== */
