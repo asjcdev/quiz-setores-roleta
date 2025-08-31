@@ -49,3 +49,4 @@ Ainda não sou profissional da área, mas estou construindo uma base sólida com
 - 💻 [LinkedIn](https://linkedin.com/in/asjcdev)  
 - 🧠 Projeto criado com apoio de IA e dedicação própria ao aprendizado contínuo
 # quiz-setores-roleta
+# quiz-setores-roleta
