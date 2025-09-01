@@ -785,7 +785,10 @@ const racetrackGame = {
     if (!this.stopsReady) this.buildBallInfrastructure();
     const sorteado = this.wheelOrder[Math.floor(Math.random() * this.wheelOrder.length)];
     const alvoDist = this.numberToDist[sorteado];
-    const SPIN_TURNS_MIN = 7; const SPIN_TURNS_MAX = 12; const SPIN_DURATION_MS = 5600;
+    const SPIN_TURNS_MIN = 22;   // antes 7
+const SPIN_TURNS_MAX = 30;   // antes 12
+const SPIN_DURATION_MS = 10000; // antes 5600 (clacks seguem esse tempo)
+
     const voltas = SPIN_TURNS_MIN + Math.random() * (SPIN_TURNS_MAX - SPIN_TURNS_MIN);
     const deltaForward = (typeof alvoDist === 'number') ? (alvoDist - this.currentBallDist + this.ballLen) % this.ballLen : Math.random() * this.ballLen;
     const travelDist = voltas * this.ballLen + deltaForward;
@@ -859,6 +862,35 @@ function mudarModo(modo) {
   }
 }
 
+
+function mudarModo(modo) {
+  document.getElementById("modo-treino").style.display = "none";
+  document.getElementById("modo-quiz").style.display = "none";
+  document.getElementById("modo-racetrack").style.display = "none";
+  document.querySelectorAll("#botoes-modo button").forEach((btn) => btn.classList.remove("ativo"));
+
+  if (modo === "setores") {
+    document.getElementById("modo-treino").style.display = "block";
+    document.getElementById("btnSetores").classList.add("ativo");
+    iniciarModoSetores();
+  } else if (modo === "vizinhos") {
+    document.getElementById("modo-treino").style.display = "block";
+    document.getElementById("btnVizinhos").classList.add("ativo");
+    iniciarModoVizinhos();
+  } else if (modo === "quiz") {
+    document.getElementById("modo-quiz").style.display = "block";
+    document.getElementById("btnQuiz").classList.add("ativo");
+    quiz.init();
+  } else if (modo === "racetrack") {
+    document.getElementById("modo-racetrack").style.display = "flex";
+    document.getElementById("btnRacetrack").classList.add("ativo");
+    racetrackGame.init();
+  }
+
+  // 🔒 liga/desliga o bloqueio de rolagem só no racetrack
+  document.body.classList.toggle('no-scroll', modo === 'racetrack');
+}
+
 // Expor para os onclick que ficaram no HTML
 window.mudarModo = mudarModo;
 window.destacarSetor = destacarSetor;
@@ -871,4 +903,11 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#btnQuiz")?.addEventListener("click", () => mudarModo("quiz"));
   $("#btnRacetrack")?.addEventListener("click", () => mudarModo("racetrack"));
   mudarModo("setores");
+});
+document.addEventListener("DOMContentLoaded", () => {
+  // já existia:
+  mudarModo("setores");
+
+  // 🔥 pré-aquecer o racetrack (só desenha uma vez; fica oculto)
+  requestIdleCallback?.(() => racetrackGame.init()) || setTimeout(() => racetrackGame.init(), 0);
 });

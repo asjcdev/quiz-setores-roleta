@@ -394,8 +394,8 @@ html, body { overflow-x: hidden; }
   /* Desktop (>=851px) — valores negativos sobem */
   --rt-shift-desktop: -5px;      /* sobe/desce a mesa inteira */
   --controls-shift-desktop: -30px;/* sobe/desce botões laterais */
-  --balance1-shift-desktop: 10px;  /* Aposta total / Saldo (bloco do canto) */
-  --balance2-shift-desktop: 10px;  /* Botões 100 / 1.000 / 10.000 */
+  --balance1-shift-desktop: 20px;  /* Aposta total / Saldo (bloco do canto) */
+  --balance2-shift-desktop: 20px;  /* Botões 100 / 1.000 / 10.000 */
 
   /* Mobile (<=850px) — valores negativos sobem */
   --rt-shift-mobile: 0px;       /* sobe/desce a mesa inteira */
@@ -439,6 +439,7 @@ html, body { overflow-x: hidden; }
 
 /* ===== Mobile ===== */
 @media (max-width: 850px){
+  body{ min-height: 100svh;}
   /* mesa inteira mais para cima/baixo */
   #modo-racetrack .main-square-container{
     margin-top: var(--rt-shift-mobile); /* negativo sobe */
@@ -706,4 +707,26 @@ html, body { overflow-x: hidden; }
   #botoes-modo{
     transform: translateX(var(--nav-offset-mobile));
   }
+}
+
+/* quando esta classe estiver no <body>, trava qualquer rolagem */
+body.no-scroll{
+  overflow: hidden;
+  height: 100dvh;           /* impede crescer além da viewport */
+  overscroll-behavior: none;/* bloqueia pull-to-refresh/bounce */
+}
+
+/* se quiser ser ainda mais conservador no mobile */
+@media (max-width: 850px){
+  body.no-scroll{ height: 100svh; }
+}
+
+/* por via das dúvidas, evite scroll interno no wrapper do racetrack */
+#modo-racetrack, 
+#modo-racetrack .racetrack-container{
+  overflow: clip; /* melhor que hidden para não criar um scroller novo */
+}
+/* impede backdrop de interceptar cliques quando hidden */
+#chip-fan-backdrop[hidden]{
+  display: none !important;
 }
