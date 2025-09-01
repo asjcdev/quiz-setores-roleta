@@ -10,10 +10,10 @@
   <body>
     <div id="controles-principais">
       <div id="botoes-modo">
-        <button id="btnSetores" onclick="mudarModo('setores')">Setores</button>
-        <button id="btnVizinhos" onclick="mudarModo('vizinhos')">Vizinhos</button>
-        <button id="btnQuiz" onclick="mudarModo('quiz')">Quiz</button>
-        <button id="btnRacetrack" onclick="mudarModo('racetrack')">Racetrack</button>
+        <button id="btnSetores">Setores</button>
+        <button id="btnVizinhos">Vizinhos</button>
+        <button id="btnQuiz">Quiz</button>
+        <button id="btnRacetrack">Racetrack</button>
       </div>
     </div>
 
@@ -72,6 +72,7 @@
                 <div class="control-button" id="remove-neighbor">-</div>
               </div>
             </div>
+
             <div class="timer-hud" aria-live="polite">
               <svg class="timer-dial" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Contagem regressiva">
                 <circle cx="32" cy="32" r="30" class="timer-ring"></circle>
@@ -79,11 +80,13 @@
                 <text id="timer-text" class="timer-text" x="32" y="38" text-anchor="middle">15</text>
               </svg>
             </div>
+
             <div class="center-column">
               <div id="racetrack-container">
                 <svg id="racetrack-svg"></svg>
               </div>
             </div>
+
             <div class="controls-column right-controls">
               <div class="action-button-wrapper">
                 <div class="control-button" id="play-button" aria-label="Girar">▶</div>
@@ -95,6 +98,7 @@
                   <span id="undo-arrow">↩</span>
                 </div>
               </div>
+
               <div id="chip-trigger" class="chip-trigger" aria-haspopup="true" aria-expanded="false" title="Escolher ficha">
                 <div class="chip-static" data-denom="1" aria-label="Ficha 1">
                   <svg class="chip-svg" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
@@ -118,18 +122,22 @@
                   </svg>
                 </div>
               </div>
+
               <div class="action-button-wrapper">
                 <div class="control-button" id="double-button">x2</div>
                 <span class="action-label">DOBRAR</span>
               </div>
+
               <div id="chip-fan" class="chip-fan" hidden></div>
               <div id="chip-fan-backdrop" hidden></div>
             </div>
           </div>
+
           <div class="balance-corner-display">
             <div class="balance-info">Aposta total <span id="total-bet">R$ 0</span></div>
             <div class="balance-info">Saldo <span id="balance">R$ 100</span></div>
           </div>
+
           <div class="balance-selector">
             <button data-balance="100">100</button>
             <button data-balance="1000">1.000</button>
@@ -143,6 +151,7 @@
       <div id="popup-content"></div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- carrega no fim e sem bloquear -->
+    <script defer src="script.js"></script>
   </body>
 </html>

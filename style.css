@@ -1,506 +1,709 @@
 /* Estilos gerais */
 * {
- box-sizing: border-box;
- margin: 0;
- padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Corpo principal da página com layout corrigido */
+/* Corpo principal */
 body {
- background-color: #1e1e1e;
- color: white;
- font-family: Arial, sans-serif;
- text-align: center;
- height: 100vh;
- padding: 0px;
- overflow: hidden; /* Mantém sem barra de rolagem */
+  background-color: #1e1e1e;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  height: 100vh;
+  padding: 0;
+  /* permite rolar na vertical quando precisar, bloqueia scroll lateral */
+  overflow-x: hidden;
+  overflow-y: auto;
 
- /* Correção de layout: Organiza os blocos principais (botões e conteúdo) em uma coluna vertical */
- display: flex;
- flex-direction: column;
- align-items: center; /* Centraliza os blocos na horizontal */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* --- ESTILOS DO JOGO PRINCIPAL (TREINO) --- */
 #modo-treino h2 {
- color: #00ffff;
- margin-bottom: 0px;
- font-size: 22px;
- margin-top: 0px;
+  color: #00ffff;
+  margin-bottom: 0;
+  font-size: 22px;
+  margin-top: 0;
 }
 
-#contador-container {
- text-align: center;
-}
-
-#contador {
- margin-bottom: 2px;
- color: #00ffff;
-}
+#contador-container { text-align: center; }
+#contador { margin-bottom: 2px; color: #00ffff; }
 
 .grid {
- display: grid;
- grid-template-columns: repeat(3, 125px);
- gap: 0px;
- justify-content: center;
- margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 125px);
+  gap: 0;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 .numero {
- position: relative;
- width: 125px;
- height: 35px;
- padding: 10px 0;
- font-size: 20px;
- font-weight: bold;
- border: 2px solid #444;
- border-radius: 2px;
- cursor: pointer;
- color: white;
- background-color: #2c2c2c;
- display: flex;
- align-items: center;
- justify-content: center;
- transition: all 0.2s ease-in-out;
+  position: relative;
+  width: 125px;
+  height: 35px;
+  padding: 10px 0;
+  font-size: 20px;
+  font-weight: bold;
+  border: 2px solid #444;
+  border-radius: 2px;
+  cursor: pointer;
+  color: white;
+  background-color: #2c2c2c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
 }
-
-.numero:hover {
- transform: scale(1.05);
- box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-}
+.numero:hover { transform: scale(1.05); box-shadow: 0 0 8px rgba(255,255,255,.5); }
 
 .vermelho { background-color: #c00000 !important; }
-.preto { background-color: #000000 !important; }
-.verde { background-color: #007f00 !important; }
-.verde-brasil { background-color: #009b3a !important; }
+.preto    { background-color: #000000 !important; }
+.verde    { background-color: #007f00 !important; }
+.verde-brasil   { background-color: #009b3a !important; }
 .amarelo-brasil { background-color: #ffde00 !important; }
-.azul-brasil { background-color: #002776 !important; }
-.branco-brasil { background-color: #ffffff !important; color: #000 !important; }
+.azul-brasil    { background-color: #002776 !important; }
+.branco-brasil  { background-color: #ffffff !important; color:#000 !important; }
 
-.numero.selecionado {
- border: 2px solid gold;
-}
+.numero.selecionado { border: 2px solid gold; }
 
 .numero.errado::after {
- content: "X";
- position: absolute;
- font-size: 40px;
- font-weight: bold;
- color: white;
- top: 50%;
- left: 50%;
- transform: translate(-50%, -50%);
- pointer-events: none;
+  content: "X";
+  position: absolute;
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .numero.correto::after {
- content: "✔";
- position: absolute;
- font-size: 40px;
- font-weight: bold;
- color: #00ff88;
- top: 50%;
- left: 50%;
- transform: translate(-50%, -50%);
- pointer-events: none;
+  content: "✔";
+  position: absolute;
+  font-size: 40px;
+  font-weight: bold;
+  color: #00ff88;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
-.zero {
- grid-column: 2 / span 1;
-}
+.zero { grid-column: 2 / span 1; }
 
 #botoes-modo button {
- padding: 12px 30px;
- font-size: 18px;
- background-color: #00ffff;
- color: #000;
- border: none;
- border-radius: 5px;
- cursor: pointer;
- opacity: 0.7;
- transition: all 0.3s ease-in-out;
+  padding: 12px 30px;
+  font-size: 18px;
+  background-color: #00ffff;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.3s ease-in-out;
 }
-
 #botoes-modo button.ativo,
-#botoes-modo button:hover {
- opacity: 1;
-}
+#botoes-modo button:hover { opacity: 1; }
+#botoes-modo button.ativo { box-shadow: 0 0 10px #00ffffaa; transform: scale(1.05); }
 
-#botoes-modo button.ativo {
- box-shadow: 0 0 10px #00ffffaa;
- transform: scale(1.05);
-}
-
-#resultado {
- margin-top: 10px;
- font-weight: bold;
- min-height: 40px;
-}
+#resultado { margin-top: 10px; font-weight: bold; min-height: 40px; }
 
 #controles-principais {
- display: flex;
- flex-direction: column;
- align-items: center;
- gap: 0;
- margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-top: 0;
 }
 
 #botoes-modo {
- display: flex;
- justify-content: center;
- gap: 10px;
- margin-top: 10px;
- margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .botao-setor-filtro {
- padding: 6px 10px;
- font-size: 14px;
- background-color: #00ffff;
- color: #000;
- border: 1px solid #666;
- border-radius: 4px;
- cursor: pointer;
- transition: all 0.3s ease-in-out;
+  padding: 6px 10px;
+  font-size: 14px;
+  background-color: #00ffff;
+  color: #000;
+  border: 1px solid #666;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
-
-.botao-setor-filtro:hover {
- background-color: #00c7c7;
- transform: scale(1.05);
-}
+.botao-setor-filtro:hover { background-color: #00c7c7; transform: scale(1.05); }
 
 #painel-setores {
- display: flex;
- flex-direction: column;
- align-items: center;
- justify-content: center;
- gap: 2px;
- margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin-top: 10px;
 }
 
-#botoes-filtro-setores {
- display: flex;
- gap: 5px;
- margin-top: 2px;
-}
+#botoes-filtro-setores { display: flex; gap: 5px; margin-top: 2px; }
 
 #popup-overlay {
- position: fixed;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- background-color: rgba(0, 0, 0, 0.7);
- display: none;
- justify-content: center;
- align-items: center;
- z-index: 1000;
+  position: fixed; inset: 0;
+  background-color: rgba(0,0,0,.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
-
 #popup-content {
- padding: 20px 40px;
- font-size: 30px;
- font-weight: bold;
- color: #fff;
- border-radius: 10px;
- animation: fadeIn 0.5s;
+  padding: 20px 40px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 10px;
+  animation: fadeIn .5s;
 }
+#popup-content.acertou { background-color: #00ff88; color:#000; }
+#popup-content.errou   { background-color: #c00000; }
 
-#popup-content.acertou { background-color: #00ff88; color: #000; }
-#popup-content.errou { background-color: #c00000; }
-
-@keyframes fadeIn {
- from { opacity: 0; }
- to { opacity: 1; }
-}
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
 
 #vizinhos-display-container {
- display: flex;
- justify-content: center;
- align-items: center;
- font-size: 20px;
- font-weight: bold;
- margin-top: 15px;
- gap: 10px;
+  display: flex; justify-content: center; align-items: center;
+  font-size: 20px; font-weight: bold;
+  margin-top: 15px; gap: 10px;
 }
 
 #botoes-niveis {
- display: flex;
- justify-content: center;
- gap: 8px;
- margin-top: 15px;
- margin-bottom: 8px;
+  display: flex; justify-content: center; gap: 8px;
+  margin-top: 15px; margin-bottom: 8px;
 }
-
 #botoes-niveis button {
- padding: 8px 14px;
- font-size: 14px;
- background-color: #333;
- color: white;
- border: 1px solid #666;
- border-radius: 4px;
- cursor: pointer;
- transition: background-color 0.2s ease;
+  padding: 8px 14px; font-size: 14px;
+  background-color: #333; color: white;
+  border: 1px solid #666; border-radius: 4px;
+  cursor: pointer; transition: background-color .2s ease;
 }
-
-#botoes-niveis button:hover {
- background-color: #555;
-}
+#botoes-niveis button:hover { background-color: #555; }
 
 .vizinho-slot {
- min-width: 30px;
- min-height: 30px;
- display: flex;
- align-items: center;
- justify-content: center;
- border: 1px dashed #666;
- border-radius: 4px;
- font-size: 16px;
- padding: 4px;
+  min-width: 30px; min-height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px dashed #666; border-radius: 4px;
+  font-size: 16px; padding: 4px;
 }
+.vizinho-slot.cheio { border: none; padding: 4px; }
 
-.vizinho-slot.cheio {
- border: none;
- padding: 4px;
-}
-
-/* --- ESTILOS DO PROJETO QUIZ (ISOLADOS) --- */
+/* --- QUIZ --- */
 #modo-quiz .card {
- background-color: #2a2a2a;
- padding: 25px 25px;
- margin: auto;
- max-width: 370px;
- border-radius: 10px;
- box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+  background-color: #2a2a2a;
+  padding: 25px;
+  margin: auto;
+  max-width: 370px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,255,255,.1);
 }
-
 #modo-quiz button {
- margin: 10px 5px;
- padding: 10px 20px;
- font-size: 16px;
- font-weight: bold;
- border: none;
- border-radius: 6px;
- cursor: pointer;
- background: linear-gradient(to bottom, #4f4f4f, #2e2e2e);
- color: white;
- box-shadow: inset 0 0 2px #ffffff44, 0 0 5px #00000066;
- transition: all 0.2s ease-in-out;
- opacity: 1;
+  margin: 10px 5px; padding: 10px 20px;
+  font-size: 16px; font-weight: bold;
+  border: none; border-radius: 6px; cursor: pointer;
+  background: linear-gradient(to bottom, #4f4f4f, #2e2e2e);
+  color: white;
+  box-shadow: inset 0 0 2px #ffffff44, 0 0 5px #00000066;
+  transition: all .2s ease-in-out; opacity: 1;
 }
-
-#modo-quiz button:hover {
- transform: scale(1.05);
- box-shadow: 0 0 10px #09a71455;
-}
-
+#modo-quiz button:hover { transform: scale(1.05); box-shadow: 0 0 10px #09a71455; }
 #modo-quiz .toggle-group { margin-bottom: 50px; }
 #modo-quiz #feedback { font-weight: bold; margin-top: 15px; min-height: 125px; color: #00ffff; }
-#modo-quiz input { padding: 16px; width: 100%; font-size: 16px; background-color: #2e2e2e; color: #00ffff; border: 1px solid #555; border-radius: 5px; }
-#modo-quiz h2, #modo-quiz h3 { color: #00ffff; }
-#modo-quiz .correct { color: #00ff88; font-weight: bold; }
-#modo-quiz .wrong { color: #ff4444; font-weight: bold; }
+#modo-quiz input { padding: 16px; width:100%; font-size:16px; background:#2e2e2e; color:#00ffff; border:1px solid #555; border-radius:5px; }
+#modo-quiz h2, #modo-quiz h3 { color:#00ffff; }
+#modo-quiz .correct { color:#00ff88; font-weight:bold; }
+#modo-quiz .wrong   { color:#ff4444; font-weight:bold; }
 
-/*---- TODO O CONTEUDO RACETRACE ABAIXO ----*/
+/* ---- RACETRACK (desktop base) ---- */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap");
-:root {
- --bg-dark: #0d0d0d; --bg-container-square: #1a1a1a;
- --track-bg: #1d1120; --track-border: #a89155;
- --number-red: #c00000; --number-black: #222; --number-green: #07522f;
- --text-light: #f3f1f1; --text-gold: #e6c56c;
- --chip-size: 30px; --chip-font-size: 14px;
+:root{
+  --bg-dark:#0d0d0d; --bg-container-square:#1a1a1a;
+  --track-bg:#1d1120; --track-border:#a89155;
+  --number-red:#c00000; --number-black:#222; --number-green:#07522f;
+  --text-light:#f3f1f1; --text-gold:#e6c56c;
+  --chip-size:30px; --chip-font-size:14px;
 }
 
-.main-square-container { width: 85vh; max-width: 850px; height: 90vh; max-height: 850px; background: var(--bg-container-square); border-radius: 20px; box-shadow: 0 0 30px rgba(0, 0, 0, .5); display: flex; justify-content: center; align-items: center; padding: 10px; box-sizing: border-box; position: relative; }
-.app-container { width: 100%; height: 100%; display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 25px; box-sizing: border-box; }
-.balance-corner-display { position: absolute; bottom: 5px; left: 25px; display: flex; flex-direction: column; gap: 2px; }
-.controls-column { display: flex; flex-direction: column; align-items: center; height: 100%; width: 80px; }
-.left-controls { justify-content: space-around; position: relative; left: 70px; }
-.right-controls { position: relative; right: 70px; justify-content: center; gap: 20px; }
-.center-column { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; flex-grow: 1; }
-.control-button { width: 30px; height: 30px; border-radius: 60%; background: rgba(255, 255, 255, .05); border: 1px solid #f3eded; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 20px; }
-.neighbor-controls { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-#neighbor-count { font-size: 22px; }
-.balance-info { font-size: 15px; line-height: 1.3; }
-.balance-info span { font-weight: 700; color: var(--text-gold); }
-.balance-selector { position: absolute; bottom: 8px; left: 67%; display: flex; gap: 8px; }
-.balance-selector button { background: var(--track-border); border: none; color: #000; padding: 6px 10px; border-radius: 5px; cursor: pointer; font-weight: 700; font-size: 13px; }
-.action-button-wrapper { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-.action-label { font-size: 10px; color: var(--text-gold); font-weight: 700; text-align: center; }
-#undo-arrow { font-size: 30px; }
-#racetrack-container { width: 90%; max-width: 2500px; }
-#racetrack-svg { width: 100%; height: auto; display: block; min-height: 300px; }
-.racetrack-bg { fill: var(--track-bg); stroke: var(--track-border); stroke-width: 3; }
-.bet-cell { stroke: var(--track-border); stroke-width: 1.5; transition: fill .2s; }
-.bet-group:hover .bet-cell { fill: rgba(255, 255, 255, .2); cursor: pointer; }
-.bet-red .bet-cell { fill: var(--number-red); }
-.bet-black .bet-cell { fill: var(--number-black); }
-.bet-green .bet-cell { fill: var(--number-green); }
-.bet-group text { fill: var(--text-light); font-weight: 700; text-anchor: middle; dominant-baseline: middle; pointer-events: none; font-size: 22px; }
-.sector-name { fill: #ece8e8; font-size: 20px; text-anchor: middle; dominant-baseline: middle; cursor: pointer; }
-.custom-line { stroke: #61570f; stroke-width: 2; pointer-events: none; fill: none; }
-.chip-static { width: var(--chip-size); height: var(--chip-size); border-radius: 50%; border: none; background: transparent; display: flex; justify-content: center; align-items: center; font-weight: 700; font-size: var(--chip-font-size); color: #fff; position: relative; cursor: pointer; transition: transform .2s ease; }
-.chip-svg text { font-size: var(--chip-font-size); font-weight: 700; }
-.chip-static::after { content: none; }
-.chip-trigger { position: relative; width: 64px; height: 64px; display: grid; place-items: center; cursor: pointer; }
-.chip-trigger .chip-static { position: absolute; left: 40%; top: 40%; transform: translate(-50%, -50%) scale(.9); }
-.chip-trigger .chip-static[data-denom="1"] { transform: translate(-6px, -5px) scale(.9); z-index: 3; }
-.chip-trigger .chip-static[data-denom="5"] { transform: translate(-6px, -15px) scale(.9); z-index: 2; }
-.chip-trigger .chip-static[data-denom="10"] { transform: translate(-6px, 5px) scale(.9); z-index: 1; }
-.right-controls { position: relative; }
-.chip-fan { position: absolute; width: 220px; height: 220px; pointer-events: none; z-index: 5; transform: scale(.92); opacity: 0; transition: transform .18s ease, opacity .18s ease; }
-.chip-fan.open { transform: scale(1); opacity: 1; }
-#chip-fan-backdrop { position: fixed; inset: 0; background: transparent; z-index: 4; }
-.chip-fan .chip-static { position: absolute; left: 50%; top: 50%; width: var(--chip-size); height: var(--chip-size); transform: translate(-50%, -50%) scale(.85); opacity: 0; pointer-events: auto; transition: transform .22s ease, opacity .22s ease; }
-.chip-fan.open .chip-static { transform: translate(calc(-50% + var(--tx, 0px)), calc(-30% + var(--ty, 10px))) scale(.95); opacity: 1; }
-.chip-fan .chip-static[data-denom="1"], .chip-trigger .chip-static[data-denom="1"] { color: #8a8f96; }
-.chip-fan .chip-static[data-denom="5"], .chip-trigger .chip-static[data-denom="5"] { color: #c00000; }
-.chip-fan .chip-static[data-denom="10"], .chip-trigger .chip-static[data-denom="10"] { color: #1f5aa6; }
-.chip-fan .chip-static[data-denom="25"], .chip-trigger .chip-static[data-denom="25"] { color: #1b8f43; }
-.chip-fan .chip-static[data-denom="50"], .chip-trigger .chip-static[data-denom="50"] { color: #ff8c00; }
-.chip-fan .chip-static[data-denom="100"], .chip-trigger .chip-static[data-denom="100"] { color: #222; }
-.chip-active { outline: 3px solid var(--text-gold); box-shadow: 0 0 0 3px #000 inset, 0 0 12px rgba(230, 197, 108, .9); }
-.winner-flash .bet-cell { filter: drop-shadow(0 0 8px rgba(255, 255, 255, .9)); }
-body.spinning .bet-group { pointer-events: none; }
-body.spinning .bet-group:hover .bet-cell { fill: initial; cursor: not-allowed; }
-.control-button.disabled { opacity: .5; pointer-events: none; }
-.timer-hud { position: absolute; top: 30px; left: 20px; display: flex; align-items: center; user-select: none; }
-.timer-dial .timer-ring { fill: none; stroke: rgba(123, 105, 4, 0.619); stroke-width: 3; }
-.timer-hand { stroke: var(--text-gold); stroke-width: 3; transform-origin: 32px 32px; }
-.timer-text { font-size: 24px; font-weight: 700; letter-spacing: 1.5px; fill: var(--text-gold); }
-#racetrack-ball { fill: #fff; stroke: #000; stroke-width: 1.5; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .6)); }
-
-/* --- CORREÇÕES FINAIS PARA O RACETRACK --- */
-#modo-racetrack {
- flex-grow: 1;
- width: 100%;
- display: flex;
- justify-content: center;
- align-items: center;
+.main-square-container{
+  width: 85vh; max-width: 850px;
+  height: 90vh; max-height: 850px;
+  background: var(--bg-container-square);
+  border-radius: 20px; box-shadow: 0 0 30px rgba(0,0,0,.5);
+  display:flex; justify-content:center; align-items:center;
+  padding:10px; position:relative;
 }
-.racetrack-container {
- display: flex;
- justify-content: center;
- align-items: center;
- width: 100%;
- height: 100%;
+.app-container{
+  width:100%; height:100%;
+  display:flex; flex-direction:row; justify-content:space-between; align-items:center; gap:25px;
+}
+.balance-corner-display{ position:absolute; bottom:5px; left:30px; display:flex; flex-direction:column; gap:2px; }
+
+.controls-column{ display:flex; flex-direction:column; align-items:center; height:100%; width:80px; }
+.left-controls{ justify-content:space-around; position:relative; left:70px; }
+.right-controls{ position:relative; right:70px; justify-content:center; gap:20px; }
+
+.center-column{ display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; flex-grow:1; }
+
+.control-button{ width:30px; height:30px; border-radius:60%; background:rgba(255,255,255,.05); border:1px solid #f3eded; display:flex; justify-content:center; align-items:center; cursor:pointer; font-size:20px; }
+
+.neighbor-controls{ display:flex; flex-direction:column; align-items:center; gap:5px; }
+#neighbor-count{ font-size:22px; }
+
+.balance-info{ font-size:15px; line-height:1.3; }
+.balance-info span{ font-weight:700; color:var(--text-gold); }
+
+.balance-selector{ position:absolute; bottom:8px; left:58%; display:flex; gap:8px; }
+.balance-selector button{ background:var(--track-border); border:none; color:#000; padding:6px 10px; border-radius:5px; cursor:pointer; font-weight:700; font-size:13px; }
+
+.action-button-wrapper{ display:flex; flex-direction:column; align-items:center; gap:5px; }
+.action-label{ font-size:10px; color:var(--text-gold); font-weight:700; text-align:center; }
+#undo-arrow{ font-size:30px; }
+
+#racetrack-container{ width:90%; max-width:2500px; }
+#racetrack-svg{ width:100%; height:auto; display:block; min-height:300px; }
+
+.racetrack-bg{ fill:var(--track-bg); stroke:var(--track-border); stroke-width:3; }
+.bet-cell{ stroke:var(--track-border); stroke-width:1.5; transition:fill .2s; }
+.bet-group:hover .bet-cell{ fill:rgba(255,255,255,.2); cursor:pointer; }
+
+.bet-red .bet-cell{ fill:var(--number-red); }
+.bet-black .bet-cell{ fill:var(--number-black); }
+.bet-green .bet-cell{ fill:var(--number-green); }
+
+.bet-group text{ fill:var(--text-light); font-weight:700; text-anchor:middle; dominant-baseline:middle; pointer-events:none; font-size:22px; }
+.sector-name{ fill:#ece8e8; font-size:20px; text-anchor:middle; dominant-baseline:middle; cursor:pointer; }
+
+.custom-line{ stroke:#61570f; stroke-width:2; pointer-events:none; fill:none; }
+
+.chip-static{ width:var(--chip-size); height:var(--chip-size); border-radius:50%; border:none; background:transparent; display:flex; justify-content:center; align-items:center; font-weight:700; font-size:var(--chip-font-size); color:#fff; position:relative; cursor:pointer; transition:transform .2s ease; }
+.chip-svg text{ font-size:var(--chip-font-size); font-weight:700; }
+
+.chip-trigger{ position:relative; width:64px; height:64px; display:grid; place-items:center; cursor:pointer; }
+.chip-trigger .chip-static{ position:absolute; left:40%; top:40%; transform:translate(-50%,-50%) scale(.9); }
+.chip-trigger .chip-static[data-denom="1"]{ transform: translate(-6px,-5px)  scale(.9); z-index:3; }
+.chip-trigger .chip-static[data-denom="5"]{ transform: translate(-6px,-15px) scale(.9); z-index:2; }
+.chip-trigger .chip-static[data-denom="10"]{ transform: translate(-6px, 5px) scale(.9); z-index:1; }
+
+.right-controls{ position:relative; }
+.chip-fan{ position:absolute; width:220px; height:220px; pointer-events:none; z-index:5; transform:scale(.92); opacity:0; transition:transform .18s ease, opacity .18s ease; }
+.chip-fan.open{ transform:scale(1); opacity:1; }
+#chip-fan-backdrop{ position:fixed; inset:0; background:transparent; z-index:4; }
+.chip-fan .chip-static{ position:absolute; left:50%; top:50%; width:var(--chip-size); height:var(--chip-size); transform:translate(-50%,-50%) scale(.85); opacity:0; pointer-events:auto; transition:transform .22s ease, opacity .22s ease; }
+.chip-fan.open .chip-static{ transform:translate(calc(-50% + var(--tx,0px)), calc(-30% + var(--ty,10px))) scale(.95); opacity:1; }
+
+.chip-fan .chip-static[data-denom="1"]{  color:#8a8f96; }
+.chip-fan .chip-static[data-denom="5"]{  color:#c00000; }
+.chip-fan .chip-static[data-denom="10"]{ color:#1f5aa6; }
+.chip-fan .chip-static[data-denom="25"]{ color:#1b8f43; }
+.chip-fan .chip-static[data-denom="50"]{ color:#ff8c00; }
+.chip-fan .chip-static[data-denom="100"]{ color:#222; }
+.chip-active{ outline:3px solid var(--text-gold); box-shadow:0 0 0 3px #000 inset, 0 0 12px rgba(230,197,108,.9); }
+
+.winner-flash .bet-cell{ filter: drop-shadow(0 0 8px rgba(255,255,255,.9)); }
+body.spinning .bet-group{ pointer-events:none; }
+body.spinning .bet-group:hover .bet-cell{ fill: initial; cursor:not-allowed; }
+
+.control-button.disabled{ opacity:.5; pointer-events:none; }
+
+.timer-hud{ position:absolute; top:30px; left:20px; display:flex; align-items:center; user-select:none; }
+.timer-dial .timer-ring{ fill:none; stroke:rgba(123,105,4,.619); stroke-width:3; }
+.timer-hand{ stroke:var(--text-gold); stroke-width:3; transform-origin:32px 32px; }
+.timer-text{ font-size:24px; font-weight:700; letter-spacing:1.5px; fill:var(--text-gold); }
+
+#racetrack-ball{ fill:#fff; stroke:#000; stroke-width:1.5; filter: drop-shadow(0 2px 4px rgba(0,0,0,.6)); }
+
+/* Correções finais posicionais do Racetrack */
+#modo-racetrack{
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.racetrack-container{
+  display:flex; justify-content:center; align-items:center;
+  width:100%; height:100%;
+}
+.main-square-container{ margin-top: -11px; }
+.balance-corner-display{ min-width:100px; bottom:15px; }
+.balance-info{ text-align:left; }
+.balance-selector{ gap:2px; bottom:21px; }
+
+/* ===== Fix Racetrack: manter layout de desktop no celular ===== */
+/* defina aqui a largura base do Racetrack no desktop */
+:root { --rt-base: 800px; }
+
+#modo-racetrack .racetrack-container{
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+#modo-racetrack .main-square-container{
+  width: var(--rt-base);
+  margin: 0 auto;
+  transform-origin: top center;
+}
+#modo-racetrack .app-container{
+  display: flex;
+  flex-wrap: nowrap !important;
+  align-items: flex-start;
+  gap: 0;
+}
+html, body { overflow-x: hidden; }
+#modo-racetrack #racetrack-container{ width:100%; }
+#modo-racetrack #racetrack-svg{ display:block; max-width:none; height:auto; }
+
+/* Desktop-only: deixa o wrapper visível para a escala e centraliza */
+@media (min-width: 100px) {
+  #modo-racetrack {
+    align-items: flex-start; /* dá um respiro no topo */
+  }
+  #modo-racetrack .racetrack-container {
+    overflow: visible;   /* evita cortes quando escalado */
+  }
 }
 
-/* --- AJUSTES FINOS DE LAYOUT (SUA VERSÃO) --- */
-.main-square-container {
- margin-top: -22px;
-}
-.balance-corner-display {
- min-width: 160px;
- bottom: 15px;
-}
-.balance-info {
- text-align: left;
-}
-.balance-selector {
- gap: 3px;
- bottom: 21px;
+/* Base do desktop; pode ajustar se quiser menor por padrão */
+:root { --rt-base: 450px; } /* largura "plena" do racetrack no desktop */
+
+#modo-racetrack .racetrack-container{
+  position: relative;
+  width: 150%;
 }
 
+#modo-racetrack .main-square-container{
+  width: var(--rt-base);
+  margin: 0 auto;
+  transform-origin: top center; /* importante para a escala */
+}
 
-/*
-==================================================================
-   INÍCIO DA SOLUÇÃO: LAYOUT GRID PARA CELULARES
-==================================================================
-   Este novo bloco de media query organiza o layout do Racetrack
-   em um grid de 3 colunas para dar controle total da posição.
-*/
-@media (max-width: 850px) {
-  body {
-    overflow-y: auto; /* Permite rolar se necessário */
-  }
+/* Segurança extra para não criar scroll horizontal */
+html, body { overflow-x: hidden; }
 
-  /* --- Ajustes Gerais --- */
-  #botoes-modo {
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 15px;
-  }
-  #botoes-modo button {
-    padding: 10px 15px;
-    font-size: 14px;
-  }
-  
-  /* --- Estrutura Principal --- */
-  .main-square-container {
-    width: 100%;
-    height: 100%;
-    max-height: none;
-    margin-top: 0;
-    padding: 10px;
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
-  }
-  
-  .app-container {
-    display: grid;
-    grid-template-columns: 65px 1fr 65px; /* Coluna Esquerda | Centro (flexível) | Coluna Direita */
-    grid-template-rows: auto 1fr auto auto;    /* Timer | Roleta | Infos Saldo | Seletor Saldo */
-    grid-template-areas:
-      "header   header      header"
-      "left-col center-col  right-col"
-      "footer1  footer1     footer1"
-      "footer2  footer2     footer2";
-    width: 100%;
-    height: 100%;
-    gap: 10px;
+/* ===== Knobs de posição (ajuste os valores) ===== */
+:root{
+  /* Desktop (>=851px) — valores negativos sobem */
+  --rt-shift-desktop: -5px;      /* sobe/desce a mesa inteira */
+  --controls-shift-desktop: -30px;/* sobe/desce botões laterais */
+  --balance1-shift-desktop: 10px;  /* Aposta total / Saldo (bloco do canto) */
+  --balance2-shift-desktop: 10px;  /* Botões 100 / 1.000 / 10.000 */
+
+  /* Mobile (<=850px) — valores negativos sobem */
+  --rt-shift-mobile: 0px;       /* sobe/desce a mesa inteira */
+  --controls-shift-mobile: 0px;   /* sobe/desce botões laterais */
+  --balance1-shift-mobile: 0px;   /* Aposta total / Saldo */
+  --balance2-shift-mobile: 0px;   /* Botões 100 / 1.000 / 10.000 */
+}
+
+/* ===== Desktop ===== */
+@media (min-width: 851px){
+  /* sobe/desce o racetrack sem afetar o scale do JS */
+  #modo-racetrack .main-square-container{
+    position: relative;
+    top: var(--rt-shift-desktop);
   }
 
-  /* --- Posicionando os elementos no Grid --- */
-  .timer-hud {
-    grid-area: header;
-    position: static;
-    justify-self: center; /* Centraliza o timer no topo */
+  /* botões laterais */
+  .left-controls,
+  .right-controls{
+    position: relative;
+    top: var(--controls-shift-desktop);
   }
 
-  .left-controls {
-    grid-area: left-col;
-    position: static;
-    justify-content: center;
-    height: 100%;
+  /* blocos de saldo no canto */
+  .balance-corner-display{
+    position: absolute;
+    bottom: calc(15px - var(--balance1-shift-desktop));
+    left: 10px; /* mantenha se quiser no canto esquerdo */
   }
 
-  .center-column {
-    grid-area: center-col;
-    width: 100%;
-    height: 100%;
+  /* seletor de saldo (100/1.000/10.000) */
+  .balance-selector{
+    position: absolute;
+    left: 62%;
+    bottom: calc(21px - var(--balance2-shift-desktop));
   }
 
-  #racetrack-container {
-    width: 100%;
+  /* opcional: reduzir espaço sob os botões do topo no desktop */
+  #botoes-modo{ margin-bottom: 10px; }
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 850px){
+  /* mesa inteira mais para cima/baixo */
+  #modo-racetrack .main-square-container{
+    margin-top: var(--rt-shift-mobile); /* negativo sobe */
   }
-  
-  .right-controls {
-    grid-area: right-col;
-    position: static;
-    justify-content: center;
-    gap: 15px;
-    height: 100%;
+
+  /* botões laterais (estão em grid) grudam no topo da coluna */
+  .left-controls,
+  .right-controls{
+    align-self: start;
+    margin-top: var(--controls-shift-mobile);
   }
-  
-  .balance-corner-display {
+
+  /* Aposta total / Saldo (no rodapé 1 do grid) */
+  .balance-corner-display{
     grid-area: footer1;
-    position: static;
-    width: 100%;
+    margin-top: var(--balance1-shift-mobile);
     justify-content: center;
     text-align: center;
-    min-width: 0;
   }
-  
-  .balance-info {
-    text-align: center;
-  }
-  
-  .balance-selector {
+
+  /* Botões 100/1.000/10.000 (rodapé 2 do grid) */
+  .balance-selector{
     grid-area: footer2;
-    position: static;
-    width: 100%;
+    margin-top: var(--balance2-shift-mobile);
     justify-content: center;
+  }
+
+  /* opcional: reduzir espaço sob os botões do topo no mobile */
+  #botoes-modo{ margin-bottom: 8px; }
+}
+
+/* ================= Knobs de posição horizontal ================= */
+:root{
+  /* Desktop (>=851px): valores positivos empurram p/ direita; negativos p/ esquerda */
+  --controls-left-x-desktop: 0px;   /* coluna ESQUERDA: + vai p/ direita, - p/ esquerda */
+  --controls-right-x-desktop: 0px;  /* coluna DIREITA: + vai p/ direita, - p/ esquerda */
+
+  /* Mobile (<=850px): idem; além disso podemos alterar a largura das colunas */
+  --controls-left-x-mobile: 0px;
+  --controls-right-x-mobile: 0px;
+
+  /* Larguras das colunas no mobile (a sua grade hoje usa 65px | 1fr | 65px) */
+  --left-col-w-mobile: 60px;
+  --right-col-w-mobile: 65px;
+}
+
+/* ================= Desktop ================= */
+@media (min-width: 851px){
+  /* zera offsets antigos para não conflitar com seu CSS anterior */
+  .left-controls{ left:auto !important; }
+  .right-controls{ right:auto !important; }
+
+  /* move horizontalmente as colunas com translateX */
+  .left-controls{
+    transform: translateX(var(--controls-left-x-desktop));
+  }
+  .right-controls{
+    transform: translateX(var(--controls-right-x-desktop));
+  }
+}
+
+/* ================= Mobile ================= */
+@media (max-width: 850px){
+  /* aumenta/diminui a largura das colunas laterais (empurra tudo para os lados) */
+  .app-container{
+    grid-template-columns: var(--left-col-w-mobile) 1fr var(--right-col-w-mobile);
+  }
+
+  /* ajuste fino extra via translateX */
+  .left-controls{
+    justify-self: center;           /* mantém centralizado dentro da coluna */
+    transform: translateX(var(--controls-left-x-mobile));
+  }
+  .right-controls{
+    justify-self: center;
+    transform: translateX(var(--controls-right-x-mobile));
+  }
+}
+
+:root{
+  --controls-left-x-mobile:  -70px; /* mais negativo = mais à esquerda */
+  --controls-right-x-mobile:  70px; /* mais positivo = mais à direita */
+}
+
+/* Inverter a ordem visual: Saldo em cima, Aposta total embaixo */
+.balance-corner-display { display: flex; flex-direction: column; }
+.balance-corner-display .balance-info:first-child { order: 2; } /* Aposta total -> desce */
+.balance-corner-display .balance-info:last-child  { order: 1; } /* Saldo -> sobe */
+
+
+/* ===== MOBILE: subir APENAS a mesa e os botões laterais ===== */
+@media (max-width: 850px) {
+  :root{
+    /* Quanto subir (negativo sobe). Ajuste à vontade: 60–120 costuma ficar bom */
+    --raise-rt-mobile: 90px;
+  }
+
+  /* 1) NÃO mova o quadrante no mobile (evita cortar coisas) */
+  #modo-racetrack .main-square-container{
+    margin-top: 0 !important;   /* ignora qualquer var anterior */
+    top: auto !important;       /* caso haja top aplicado */
+    transform: none !important; /* garante que não está sendo escalado/transladado */
+    overflow: visible;          /* não corta nada que suba */
+  }
+
+  /* 2) Suba SÓ o miolo (mesa) */
+  #modo-racetrack .center-column{
+    transform: translateY(calc(-1 * var(--raise-rt-mobile)));
+  }
+
+  /* 3) Suba SÓ os botões laterais (esquerda e direita) */
+  #modo-racetrack .left-controls,
+  #modo-racetrack .right-controls{
+    transform: translateY(calc(-1 * var(--raise-rt-mobile)));
+  }
+
+  /* 4) Garanta que relógio e balances NÃO sejam afetados por engano */
+  .timer-hud{ transform: none; }
+  .balance-corner-display,
+  .balance-selector{
+    transform: none;
+    margin-top: 0;
+  }
+}
+/* ===== MOBILE: subir a mesa e afastar botões para fora ===== */
+@media (max-width: 850px) {
+  :root{
+    /* quanto subir (negativo sobe) */
+    --raise-rt-mobile: 90px;
+
+    /* afastamento horizontal dos botões (valores positivos empurram p/ direita; negativos p/ esquerda) */
+    --controls-left-x-mobile:  10px;  /* coluna ESQUERDA: deixe mais negativo p/ ir mais p/ fora */
+    --controls-right-x-mobile:  -10px;  /* coluna DIREITA: deixe mais positivo p/ ir mais p/ fora */
+  }
+
+  /* não mova o quadrante */
+  #modo-racetrack .main-square-container{
+    margin-top: 0 !important;
+    top: auto !important;
+    transform: none !important;
+    overflow: visible;
+  }
+
+  /* sobe só a MESA */
+  #modo-racetrack .center-column{
+    transform: translateY(calc(-1 * var(--raise-rt-mobile)));
+  }
+
+  /* zera offsets antigos e sobe + afasta só os BOTÕES laterais */
+  #modo-racetrack .left-controls,
+  #modo-racetrack .right-controls{
+    position: relative;
+    left: 0 !important;
+    right: 0 !important;
+  }
+  #modo-racetrack .left-controls{
+    transform: translate(var(--controls-left-x-mobile), calc(-1 * var(--raise-rt-mobile)));
+  }
+  #modo-racetrack .right-controls{
+    transform: translate(var(--controls-right-x-mobile), calc(-1 * var(--raise-rt-mobile)));
+  }
+
+  /* opcional: dá um pouco mais de “asa” para não parecer colado */
+  .controls-column{ width: 80px; }    /* aumente se quiser mais respiro */
+  .app-container{ gap: 18px; }        /* ou ajuste o gap geral */
+}
+
+/* ===== MOBILE: subir Saldo/Aposta e os botões 100/1.000/10.000 ===== */
+@media (max-width: 850px) {
+  :root{
+    /* quanto subir (negativo sobe; aumente o número para subir mais) */
+    --raise-balance1-mobile: 180px;  /* Saldo / Aposta total */
+    --raise-balance2-mobile: 180px;  /* 100 / 1.000 / 10.000 */
+
+    /* posição horizontal opcional (ajuste se quiser alinhar com o relógio) */
+    --balance-left-mobile: 30px;     /* bloco Saldo/Aposta */
+    --selector-left-mobile: 78%;     /* base do seletor (em %) */
+    --selector-translateX-mobile: -50%; /* -50% centraliza; use 0 para alinhar à esquerda */
+  }
+
+  /* Saldo / Aposta total */
+  #modo-racetrack .balance-corner-display{
+    position: absolute;
+    left: var(--balance-left-mobile);
+    bottom: 15px;                          /* base */
+    transform: translateY(calc(-1 * var(--raise-balance1-mobile)));
+    z-index: 6;                             /* fica acima da mesa */
+  }
+
+  /* 100 / 1.000 / 10.000 */
+  #modo-racetrack .balance-selector{
+    position: absolute;
+    left: var(--selector-left-mobile);
+    bottom: 21px;                           /* base */
+    transform: translate(var(--selector-translateX-mobile),
+                         calc(-1 * var(--raise-balance2-mobile)));
+    z-index: 6;
+  }
+
+  /* opcional: dar uma enxugada no tamanho no mobile */
+  .balance-info{ font-size: 13px; }
+  .balance-selector button{ padding: 4px 8px; font-size: 12px; }
+}
+
+
+/* Botões principais no mobile = desktop */
+@media (max-width: 850px){
+  /* 1 linha com 4 colunas iguais */
+  #botoes-modo{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;                /* mesmo respiro do desktop */
+    width: 105%;
+    max-width: 550px;         /* evita esticar demais em telas grandes */
+    margin: 10px auto 10px;   /* centraliza e dá espaço embaixo */
+    padding: 0 8px;           /* segura nas bordas do telefone */
+  }
+  #botoes-modo button{
+    width: 105%;
+    padding: 12px 0;          /* mesmo “peso” do desktop */
+    font-size: 18px;          /* mesma tipografia do desktop */
+    opacity: 0.7;             /* mantém seus efeitos */
+  }
+  #botoes-modo button.ativo,
+  #botoes-modo button:hover{
+    opacity: 1;
+  }
+}
+
+/* Opcional: em telas bem estreitas, dá uma leve compactada */
+@media (max-width: 360px){
+  #botoes-modo button{
+    padding: 10px 0;
+    font-size: 16px;
+  }
+}
+
+/* === CORES DOS MINI-CHIPS DO BOTÃO .chip-trigger === */
+/* (precisa vir DEPOIS de .chip-static { color:#fff; } e depois do bloco do .chip-fan) */
+.chip-trigger .chip-static[data-denom="1"]  { color:#8a8f96; } /* cinza */
+.chip-trigger .chip-static[data-denom="5"]  { color:#c00000; } /* vermelho (topo) */
+.chip-trigger .chip-static[data-denom="10"] { color:#1f5aa6; } /* azul (base) */
+.chip-trigger .chip-static[data-denom="25"] { color:#1b8f43; }
+.chip-trigger .chip-static[data-denom="50"] { color:#ff8c00; }
+.chip-trigger .chip-static[data-denom="100"]{ color:#222222; }
+
+/* melhora a nitidez dos anéis dentro do botão */
+.chip-trigger .chip-static .chip-svg { display:block; }
+
+/* === Offset horizontal dos botões do topo === */
+:root{
+  --nav-offset-desktop: 0px;   /* 0 = centralizado no desktop */
+  --nav-offset-mobile:  -14px; /* negativo p/ ir à esquerda; positivo p/ direita */
+}
+
+/* Desktop */
+@media (min-width: 851px){
+  #botoes-modo{
+    transform: translateX(var(--nav-offset-desktop));
+  }
+}
+
+/* Mobile */
+@media (max-width: 850px){
+  #botoes-modo{
+    transform: translateX(var(--nav-offset-mobile));
   }
 }

@@ -1,3 +1,8 @@
+'use strict';
+
+// util de seleção rápida
+const $ = (sel) => document.querySelector(sel);
+
 // --- LÓGICA DO JOGO PRINCIPAL (TREINO) ---
 const treino = {
   vermelhos: [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36],
@@ -8,26 +13,20 @@ const treino = {
     Tier: [27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33],
   },
   sequenciaRoleta: [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26],
-  coresBrasil: {
-    Voisins: "verde-brasil",
-    Tier: "amarelo-brasil",
-    Orphelins: "azul-brasil",
-  },
+  coresBrasil: { Voisins: "verde-brasil", Tier: "amarelo-brasil", Orphelins: "azul-brasil" },
   modoAtual: "",
   numerosCorretos: [],
   numeroSorteado: 0,
 };
 
 function mostrarPopup(mensagem, tipo) {
-  const popupOverlay = document.getElementById("popup-overlay");
-  const popupContent = document.getElementById("popup-content");
+  const popupOverlay = $("#popup-overlay");
+  const popupContent = $("#popup-content");
   popupContent.textContent = mensagem;
   popupContent.classList.remove("acertou", "errou");
   popupContent.classList.add(tipo);
   popupOverlay.style.display = "flex";
-  setTimeout(() => {
-    popupOverlay.style.display = "none";
-  }, 1500);
+  setTimeout(() => { popupOverlay.style.display = "none"; }, 1500);
 }
 
 function escolherSetorAleatorio() {
@@ -39,33 +38,36 @@ function iniciarModoSetores() {
   treino.modoAtual = "setores";
   const setorAleatorio = escolherSetorAleatorio();
   treino.numerosCorretos = treino.setores[setorAleatorio];
-  document.getElementById("pergunta").textContent = `Clique nos números ${setorAleatorio}`;
-  document.getElementById("painel-setores").style.display = "flex";
-  document.getElementById("vizinhos-display-container").style.display = "none";
-  document.getElementById("numeros-grid").style.display = "grid";
-  document.getElementById("botoes-niveis").style.display = "none";
+  $("#pergunta").textContent = `Clique nos números ${setorAleatorio}`;
+  $("#painel-setores").style.display = "flex";
+  $("#vizinhos-display-container").style.display = "none";
+  $("#numeros-grid").style.display = "grid";
+  $("#botoes-niveis").style.display = "none";
   reiniciarJogo(treino.numerosCorretos.length, true);
 }
 
 function iniciarModoVizinhos() {
   treino.modoAtual = "selecionar_nivel_vizinhos";
-  document.getElementById("pergunta").textContent = "Selecione o nível de dificuldade";
-  document.getElementById("painel-setores").style.display = "none";
-  document.getElementById("vizinhos-display-container").style.display = "none";
-  document.getElementById("numeros-grid").style.display = "none";
-  document.getElementById("botoes-niveis").style.display = "flex";
+  $("#pergunta").textContent = "Selecione o nível de dificuldade";
+  $("#painel-setores").style.display = "none";
+  $("#vizinhos-display-container").style.display = "none";
+  $("#numeros-grid").style.display = "none";
+  $("#botoes-niveis").style.display = "flex";
 }
 
 function iniciarVizinhosPorNivel(nivel) {
   treino.modoAtual = "vizinhos";
-  const grid = document.getElementById("numeros-grid");
+  const grid = $("#numeros-grid");
   grid.dataset.currentLevel = nivel;
-  document.getElementById("pergunta").textContent = `Preencha ${nivel} vizinho${nivel > 1 ? "s" : ""} de cada lado`;
-  document.getElementById("botoes-niveis").style.display = "none";
-  document.getElementById("vizinhos-display-container").style.display = "flex";
+
+  $("#pergunta").textContent = `Preencha ${nivel} vizinho${nivel > 1 ? "s" : ""} de cada lado`;
+  $("#botoes-niveis").style.display = "none";
+  $("#vizinhos-display-container").style.display = "flex";
   grid.style.display = "grid";
+
   treino.numeroSorteado = Math.floor(Math.random() * 37);
   const indiceSorteado = treino.sequenciaRoleta.indexOf(treino.numeroSorteado);
+
   const vizinhosEsquerda = [];
   const vizinhosDireita = [];
   for (let i = 1; i <= nivel; i++) {
@@ -77,7 +79,8 @@ function iniciarVizinhosPorNivel(nivel) {
     vizinhosDireita.push(treino.sequenciaRoleta[indice]);
   }
   treino.numerosCorretos = [...vizinhosEsquerda, ...vizinhosDireita];
-  const vizinhosDisplay = document.getElementById("vizinhos-display-container");
+
+  const vizinhosDisplay = $("#vizinhos-display-container");
   vizinhosDisplay.innerHTML = "";
   vizinhosEsquerda.reverse().forEach((vizinhoNum) => {
     const slot = document.createElement("div");
@@ -98,6 +101,7 @@ function iniciarVizinhosPorNivel(nivel) {
     slot.dataset.numero = vizinhoNum;
     vizinhosDisplay.appendChild(slot);
   });
+
   reiniciarJogo(treino.numerosCorretos.length, true);
 }
 
@@ -105,71 +109,68 @@ function destacarSetor(setor) {
   const numeros = document.querySelectorAll(".numero");
   const botoesFiltro = document.querySelectorAll(".botao-setor-filtro");
   botoesFiltro.forEach((btn) => btn.classList.remove("selecionado"));
+
   if (setor === "reset") {
     numeros.forEach((btn) => {
       btn.classList.remove("verde-brasil", "amarelo-brasil", "azul-brasil");
-      if (treino.vermelhos.includes(parseInt(btn.textContent))) {
-        btn.classList.add("vermelho");
-      } else if (treino.pretos.includes(parseInt(btn.textContent))) {
-        btn.classList.add("preto");
-      } else if (parseInt(btn.textContent) === 0) {
-        btn.classList.add("verde");
-      }
+      const n = parseInt(btn.textContent, 10);
+      if (treino.vermelhos.includes(n)) btn.classList.add("vermelho");
+      else if (treino.pretos.includes(n)) btn.classList.add("preto");
+      else if (n === 0) btn.classList.add("verde");
     });
-    document.getElementById("btnReset")?.classList.add("selecionado");
+    $("#btnReset")?.classList.add("selecionado");
     return;
   }
+
   document.getElementById(`btn${setor}`)?.classList.add("selecionado");
+
   numeros.forEach((btn) => {
     btn.classList.remove("verde-brasil", "amarelo-brasil", "azul-brasil");
-    if (treino.vermelhos.includes(parseInt(btn.textContent))) btn.classList.add("vermelho");
-    else if (treino.pretos.includes(parseInt(btn.textContent))) btn.classList.add("preto");
-    else if (parseInt(btn.textContent) === 0) btn.classList.add("verde");
+    const n = parseInt(btn.textContent, 10);
+    if (treino.vermelhos.includes(n)) btn.classList.add("vermelho");
+    else if (treino.pretos.includes(n)) btn.classList.add("preto");
+    else if (n === 0) btn.classList.add("verde");
   });
+
   const cor = treino.coresBrasil[setor];
   numeros.forEach((btn) => {
-    const num = parseInt(btn.textContent);
-    if (treino.setores[setor].includes(num)) {
-      btn.classList.add(cor);
-    }
+    const num = parseInt(btn.textContent, 10);
+    if (treino.setores[setor].includes(num)) btn.classList.add(cor);
   });
 }
 
 function reiniciarJogo(totalNecessario, habilitarCliques) {
-  document.getElementById("resultado").textContent = "";
+  $("#resultado").textContent = "";
   gerarGrid(habilitarCliques);
   if (treino.modoAtual === "setores") {
-    document.getElementById("contador").textContent = `Selecionados: 0/${totalNecessario}`;
+    $("#contador").textContent = `Selecionados: 0/${totalNecessario}`;
   }
 }
 
 function gerarGrid(habilitarCliques) {
-  const container = document.getElementById("numeros-grid");
+  const container = $("#numeros-grid");
   container.innerHTML = "";
+
   const zero = document.createElement("div");
   zero.textContent = "0";
   zero.className = "numero verde zero";
-  if (habilitarCliques) {
-    zero.onclick = () => validarSelecao(zero, 0);
-    zero.style.cursor = "pointer";
-  }
+  if (habilitarCliques) zero.onclick = () => validarSelecao(zero, 0);
   container.append(document.createElement("div"), zero, document.createElement("div"));
+
   for (let i = 1; i <= 36; i++) {
     const btn = document.createElement("div");
     btn.classList.add("numero");
     if (treino.vermelhos.includes(i)) btn.classList.add("vermelho");
     else if (treino.pretos.includes(i)) btn.classList.add("preto");
     btn.textContent = i;
-    if (habilitarCliques) {
-      btn.onclick = () => validarSelecao(btn, i);
-      btn.style.cursor = "pointer";
-    }
+    if (habilitarCliques) btn.onclick = () => validarSelecao(btn, i);
     container.appendChild(btn);
   }
 }
 
 function validarSelecao(btn, num) {
   if (btn.classList.contains("selecionado") || btn.classList.contains("usado")) return;
+
   if (treino.modoAtual === "vizinhos") {
     const indexDoVizinho = treino.numerosCorretos.indexOf(num);
     if (indexDoVizinho !== -1) {
@@ -185,7 +186,7 @@ function validarSelecao(btn, num) {
       if (treino.numerosCorretos.length === 0) {
         mostrarPopup("ACERTOU", "acertou");
         setTimeout(() => {
-          const nivelAtual = document.getElementById("numeros-grid").dataset.currentLevel;
+          const nivelAtual = $("#numeros-grid").dataset.currentLevel;
           iniciarVizinhosPorNivel(nivelAtual);
         }, 2500);
       }
@@ -193,7 +194,7 @@ function validarSelecao(btn, num) {
       btn.classList.add("errado");
       mostrarPopup("ERROU", "errou");
       setTimeout(() => {
-        const nivelAtual = document.getElementById("numeros-grid").dataset.currentLevel;
+        const nivelAtual = $("#numeros-grid").dataset.currentLevel;
         iniciarVizinhosPorNivel(nivelAtual);
       }, 1500);
     }
@@ -207,9 +208,9 @@ function validarSelecao(btn, num) {
     }
     btn.classList.add("correto");
     const totalClicados = document.querySelectorAll(".numero.selecionado").length;
-    const totalCorretos = document.getElementById("contador").textContent.split("/")[1];
-    document.getElementById("contador").textContent = `Selecionados: ${totalClicados}/${totalCorretos}`;
-    if (totalClicados >= parseInt(totalCorretos)) {
+    const totalCorretos = $("#contador").textContent.split("/")[1];
+    $("#contador").textContent = `Selecionados: ${totalClicados}/${totalCorretos}`;
+    if (totalClicados >= parseInt(totalCorretos, 10)) {
       mostrarPopup("ACERTOU", "acertou");
       setTimeout(iniciarModoSetores, 2500);
     }
@@ -257,9 +258,9 @@ const quiz = {
     this.nivel = n;
     this.current = 0;
     this.acertos = 0;
-    document.getElementById("feedback").textContent = "";
-    document.getElementById("vizinhos-input").value = "";
-    document.getElementById("input-area").style.display = "none";
+    $("#feedback").textContent = "";
+    $("#vizinhos-input").value = "";
+    $("#input-area").style.display = "none";
     const novos = this.roleta.map((num) => ({
       num,
       sector: this.getSetor(num),
@@ -270,18 +271,17 @@ const quiz = {
     this.showQuestion();
   },
   atualizarStatus: function () {
-    const status = document.getElementById("status");
-    status.textContent = `Nível ${this.nivel} | Tentativa ${this.tentativas} | Progresso: ${this.acertos}/37`;
+    $("#status").textContent = `Nível ${this.nivel} | Tentativa ${this.tentativas} | Progresso: ${this.acertos}/37`;
   },
   showQuestion: function () {
     const q = this.perguntas[this.current];
-    const question = document.getElementById("question");
-    const options = document.getElementById("options");
-    const inputArea = document.getElementById("input-area");
-    const feedback = document.getElementById("feedback");
+    const question = $("#question");
+    const options = $("#options");
+    const inputArea = $("#input-area");
+    const feedback = $("#feedback");
     feedback.textContent = "";
     inputArea.style.display = "none";
-    document.getElementById("vizinhos-input").value = "";
+    $("#vizinhos-input").value = "";
     if (this.nivel === 1) {
       question.textContent = `Número ${q.num} pertence a qual setor?`;
       options.innerHTML = "";
@@ -299,7 +299,7 @@ const quiz = {
   },
   checkSectorAnswer: function (answer) {
     const q = this.perguntas[this.current];
-    const feedback = document.getElementById("feedback");
+    const feedback = $("#feedback");
     if (answer === q.sector) {
       this.acertos++;
       feedback.innerHTML = `<span class='correct'>Correto!</span>`;
@@ -312,14 +312,14 @@ const quiz = {
   },
   checkTypedVizinhos: function () {
     const q = this.perguntas[this.current];
-    const input = document.getElementById("vizinhos-input").value;
+    const input = $("#vizinhos-input").value;
     const resposta = input
       .split(",")
-      .map((n) => parseInt(n.trim()))
+      .map((n) => parseInt(n.trim(), 10))
       .filter((n) => !isNaN(n));
     const corretos = q.vizinhos.slice().sort((a, b) => a - b);
     const user = resposta.slice().sort((a, b) => a - b);
-    const feedback = document.getElementById("feedback");
+    const feedback = $("#feedback");
     const iguais = JSON.stringify(user) === JSON.stringify(corretos);
     if (iguais) {
       this.acertos++;
@@ -336,10 +336,10 @@ const quiz = {
     this.atualizarStatus();
     if (this.acertos >= 37) {
       if (this.nivel === 1) {
-        document.getElementById("feedback").innerHTML = `<span class='correct'>Parabéns! Você completou o Nível 1! Vamos para o Nível 2.</span>`;
+        $("#feedback").innerHTML = `<span class='correct'>Parabéns! Você completou o Nível 1! Vamos para o Nível 2.</span>`;
         setTimeout(() => this.iniciarNivel(2), 3000);
       } else {
-        document.getElementById("feedback").innerHTML = `<span class='correct'>Você concluiu o Nível 2! 👏 Em breve desbloquearemos o próximo nível visual!</span>`;
+        $("#feedback").innerHTML = `<span class='correct'>Você concluiu o Nível 2! 👏 Em breve desbloquearemos o próximo nível visual!</span>`;
       }
     } else {
       this.showQuestion();
@@ -349,11 +349,11 @@ const quiz = {
     if (this.iniciado) return;
     document.querySelectorAll(".btn-vizinho-quiz").forEach((button) => {
       button.addEventListener("click", (e) => {
-        this.setNeighbors(parseInt(e.target.dataset.n));
+        this.setNeighbors(parseInt(e.target.dataset.n, 10));
       });
     });
-    document.getElementById("btn-verificar-vizinhos").addEventListener("click", () => this.checkTypedVizinhos());
-    document.getElementById("btn-proxima").addEventListener("click", () => this.proximaPergunta());
+    $("#btn-verificar-vizinhos").addEventListener("click", () => this.checkTypedVizinhos());
+    $("#btn-proxima").addEventListener("click", () => this.proximaPergunta());
     this.iniciarNivel(1);
     this.iniciado = true;
   },
@@ -835,31 +835,40 @@ const racetrackGame = {
 
 // --- LÓGICA DE CONTROLE GERAL E NAVEGAÇÃO ---
 function mudarModo(modo) {
-  document.getElementById("modo-treino").style.display = "none";
-  document.getElementById("modo-quiz").style.display = "none";
-  document.getElementById("modo-racetrack").style.display = "none";
+  $("#modo-treino").style.display = "none";
+  $("#modo-quiz").style.display = "none";
+  $("#modo-racetrack").style.display = "none";
   document.querySelectorAll("#botoes-modo button").forEach((btn) => btn.classList.remove("ativo"));
 
   if (modo === "setores") {
-    document.getElementById("modo-treino").style.display = "block";
-    document.getElementById("btnSetores").classList.add("ativo");
+    $("#modo-treino").style.display = "block";
+    $("#btnSetores").classList.add("ativo");
     iniciarModoSetores();
   } else if (modo === "vizinhos") {
-    document.getElementById("modo-treino").style.display = "block";
-    document.getElementById("btnVizinhos").classList.add("ativo");
+    $("#modo-treino").style.display = "block";
+    $("#btnVizinhos").classList.add("ativo");
     iniciarModoVizinhos();
   } else if (modo === "quiz") {
-    document.getElementById("modo-quiz").style.display = "block";
-    document.getElementById("btnQuiz").classList.add("ativo");
+    $("#modo-quiz").style.display = "block";
+    $("#btnQuiz").classList.add("ativo");
     quiz.init();
   } else if (modo === "racetrack") {
-    document.getElementById("modo-racetrack").style.display = "flex";
-    document.getElementById("btnRacetrack").classList.add("ativo");
+    $("#modo-racetrack").style.display = "flex";
+    $("#btnRacetrack").classList.add("ativo");
     racetrackGame.init();
   }
 }
 
+// Expor para os onclick que ficaram no HTML
+window.mudarModo = mudarModo;
+window.destacarSetor = destacarSetor;
+window.iniciarVizinhosPorNivel = iniciarVizinhosPorNivel;
+
+// Liga os botões do topo e entra no modo inicial
 document.addEventListener("DOMContentLoaded", () => {
+  $("#btnSetores")?.addEventListener("click", () => mudarModo("setores"));
+  $("#btnVizinhos")?.addEventListener("click", () => mudarModo("vizinhos"));
+  $("#btnQuiz")?.addEventListener("click", () => mudarModo("quiz"));
+  $("#btnRacetrack")?.addEventListener("click", () => mudarModo("racetrack"));
   mudarModo("setores");
 });
-
