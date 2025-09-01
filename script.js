@@ -836,6 +836,19 @@ const SPIN_DURATION_MS = 10000; // antes 5600 (clacks seguem esse tempo)
   },
 };
 
+// trava/destrava zoom via viewport (Android/Chrome respeita)
+const VP = document.querySelector('meta[name="viewport"]');
+const VP_BASE = 'width=device-width, initial-scale=1, viewport-fit=cover';
+
+function lockZoom(lock) {
+  if (!VP) return;
+  VP.setAttribute(
+    'content',
+    lock ? VP_BASE + ', maximum-scale=1, user-scalable=no'  // trava zoom
+         : VP_BASE + ', maximum-scale=5'                    // libera zoom
+  );
+}
+
 // --- LÓGICA DE CONTROLE GERAL E NAVEGAÇÃO ---
 function mudarModo(modo) {
   $("#modo-treino").style.display = "none";
@@ -895,6 +908,8 @@ function mudarModo(modo) {
 window.mudarModo = mudarModo;
 window.destacarSetor = destacarSetor;
 window.iniciarVizinhosPorNivel = iniciarVizinhosPorNivel;
+
+
 
 // Liga os botões do topo e entra no modo inicial
 document.addEventListener("DOMContentLoaded", () => {
