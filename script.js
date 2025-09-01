@@ -785,8 +785,8 @@ const racetrackGame = {
     if (!this.stopsReady) this.buildBallInfrastructure();
     const sorteado = this.wheelOrder[Math.floor(Math.random() * this.wheelOrder.length)];
     const alvoDist = this.numberToDist[sorteado];
-    const SPIN_TURNS_MIN = 22;   // antes 7
-const SPIN_TURNS_MAX = 30;   // antes 12
+    const SPIN_TURNS_MIN = 14;   // antes 7
+const SPIN_TURNS_MAX = 22;   // antes 12
 const SPIN_DURATION_MS = 10000; // antes 5600 (clacks seguem esse tempo)
 
     const voltas = SPIN_TURNS_MIN + Math.random() * (SPIN_TURNS_MAX - SPIN_TURNS_MIN);
@@ -835,19 +835,6 @@ const SPIN_DURATION_MS = 10000; // antes 5600 (clacks seguem esse tempo)
     }
   },
 };
-
-// trava/destrava zoom via viewport (Android/Chrome respeita)
-const VP = document.querySelector('meta[name="viewport"]');
-const VP_BASE = 'width=device-width, initial-scale=1, viewport-fit=cover';
-
-function lockZoom(lock) {
-  if (!VP) return;
-  VP.setAttribute(
-    'content',
-    lock ? VP_BASE + ', maximum-scale=1, user-scalable=no'  // trava zoom
-         : VP_BASE + ', maximum-scale=5'                    // libera zoom
-  );
-}
 
 // --- LÓGICA DE CONTROLE GERAL E NAVEGAÇÃO ---
 function mudarModo(modo) {
@@ -909,8 +896,6 @@ window.mudarModo = mudarModo;
 window.destacarSetor = destacarSetor;
 window.iniciarVizinhosPorNivel = iniciarVizinhosPorNivel;
 
-
-
 // Liga os botões do topo e entra no modo inicial
 document.addEventListener("DOMContentLoaded", () => {
   $("#btnSetores")?.addEventListener("click", () => mudarModo("setores"));
@@ -918,11 +903,4 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#btnQuiz")?.addEventListener("click", () => mudarModo("quiz"));
   $("#btnRacetrack")?.addEventListener("click", () => mudarModo("racetrack"));
   mudarModo("setores");
-});
-document.addEventListener("DOMContentLoaded", () => {
-  // já existia:
-  mudarModo("setores");
-
-  // 🔥 pré-aquecer o racetrack (só desenha uma vez; fica oculto)
-  requestIdleCallback?.(() => racetrackGame.init()) || setTimeout(() => racetrackGame.init(), 0);
 });
