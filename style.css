@@ -394,8 +394,8 @@ html, body { overflow-x: hidden; }
   /* Desktop (>=851px) — valores negativos sobem */
   --rt-shift-desktop: -5px;      /* sobe/desce a mesa inteira */
   --controls-shift-desktop: -30px;/* sobe/desce botões laterais */
-  --balance1-shift-desktop: 10px;  /* Aposta total / Saldo (bloco do canto) */
-  --balance2-shift-desktop: 10px;  /* Botões 100 / 1.000 / 10.000 */
+  --balance1-shift-desktop: 20px;  /* Aposta total / Saldo (bloco do canto) */
+  --balance2-shift-desktop: 20px;  /* Botões 100 / 1.000 / 10.000 */
 
   /* Mobile (<=850px) — valores negativos sobem */
   --rt-shift-mobile: 0px;       /* sobe/desce a mesa inteira */

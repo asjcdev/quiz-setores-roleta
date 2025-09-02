@@ -3,7 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <!-- HEAD -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+
+    <!-- Se quiser bloquear pinça/duplo-toque (custa acessibilidade):
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+-->
+    <link rel="preload" href="./racetrack/track.svg" as="image" />
+    <link rel="preload" href="./racetrack/chip.png" as="image" />
+    <!-- repita para os demais arquivos usados no Racetrack -->
 
     <link rel="stylesheet" href="style.css" />
     <title>Treinador de Roleta</title>
